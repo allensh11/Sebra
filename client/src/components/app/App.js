@@ -1,9 +1,8 @@
 import React from 'react';
 import { HashRouter as Router, Route } from 'react-router-dom';
-import './App.css';
-import Homepage from '../homepage/Homepage';
-import CreateAccount from '../createAccount/CreateAccount';
-import Account from '../account/Account';
+import Homepage from '../Homepage';
+import CreateAccount from '../CreateAccount';
+import Account from '../Account';
 import CompletedPayment from '../completedPayment/CompletedPayment';
 
 
