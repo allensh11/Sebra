@@ -4,12 +4,37 @@ $body-bg: #000;
 // Import Bootstrap and its default variables
 @import '~bootstrap/scss/bootstrap.scss';
 
+.Account-header a {
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 70px;
+    margin: 40px;
+    font-weight: 400;
+}
+  
+.Account-header a:hover {
+    color: black;
+    text-decoration: none;
+}
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.Account-header h3 {
+    margin: 40px;
+    font-weight: 300;   
+}
+
+html {
+    background-color: white;
+}
+
+.Account {
+    margin: 40px;
+}
+
+.Account button {
+    margin-top: 40px;
+    float: right;
+    font-size: 25px;
+    padding: 20px 40px;
 }

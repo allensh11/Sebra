@@ -1,0 +1,13 @@
+.Emoji {
+    width: 50px;
+    height: 300px;
+    margin: auto;
+}
+
+.Emoji span {
+    display: inline-block;
+    font-size: 75px;
+    line-height: 300px;
+    text-align: center;
+    padding-top: 7px;
+}
