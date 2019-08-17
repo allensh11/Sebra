@@ -2,11 +2,12 @@
     text-align: center;
   }
   
-.App-header {
-background-color: whitesmoke;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-font-size: calc(10px + 2vmin);
+.App-header a {
+  background-color: black;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 70px;
 }
