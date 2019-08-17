@@ -17,12 +17,12 @@ class CreateAccount extends Component {
   }
 
   render() {
-    console.log(this.state)
+    const { history } = this.props;
     const { handleChange } = this;
     const { username, password/* , error */ } = this.state;
     return (
       <Fragment>
-        <header className="Create-account-header">
+        <header className="Account-header">
           <Link to='/'>Welcome to Sebra!</Link>
           <h3>Create your account.</h3>
         </header>
@@ -54,7 +54,7 @@ class CreateAccount extends Component {
               Remember Me
             </Label>
           </FormGroup>
-          <Button color='primary'>Create</Button>
+          <Button onClick={ () => history.push('/account/123')}color='primary'>Create</Button>
         </Form>
       </Fragment>
     );
