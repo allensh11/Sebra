@@ -1,65 +1,79 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import './CreateAccount.css';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 
-class CreateAccount extends Component {
+const useStyles = makeStyles(theme => ({
+  container: {
+    backgroundColor: 'white'
+  },
+  formContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    marginLeft: '32px'
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200,
+  },
+  dense: {
+    marginTop: 19,
+  },
+  menu: {
+    width: 200,
+  },
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
 
-  state = {
+
+const CreateAccount = ({ history }) => {
+  const classes = useStyles();
+  const [values, setValues] = React.useState({
     username: '',
     password: '',
     error: ''
-  }
+  });
 
-  handleChange = e => {
-    this.setState({ [e.target.id]: e.target.value });
-  }
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value });
+  };
 
-  render() {
-    const { history } = this.props;
-    const { handleChange } = this;
-    const { username, password/* , error */ } = this.state;
-    return (
-      <Fragment>
-        <header className="Account-header">
-          <Link to='/'>Welcome to Sebra!</Link>
-          <h3>Create your account.</h3>
-        </header>
-        <Form className="Create-account">
-          <FormGroup>
-            <Label for="username">Username</Label>
-            <Input
-              onChange={ handleChange } 
-              value={ username } 
-              type="textarea" 
-              id="username" 
-              required
-              autoFocus
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label for="password">Password</Label>
-            <Input 
-              onChange={ handleChange } 
-              value={ password } 
-              type="password" 
-              id="password"
-              required
-            />
-          </FormGroup>
-          <FormGroup check>
-            <Label check>
-              <Input type="checkbox" />{' '}
-              Remember Me
-            </Label>
-          </FormGroup>
-          <Button onClick={ () => history.push('/account/123')}color='primary'>Create</Button>
-        </Form>
-      </Fragment>
-    );
-  }
+  return (
+    <div className={classes.container}>
+      <header className="Account-header">
+        <Link to='/'>Welcome to Sebra!</Link>
+        <h3>Create your account.</h3>
+      </header>
+      <form className={classes.formContainer} noValidate autoComplete="off">
+        <TextField
+          required
+          autoFocus
+          id="username"
+          label="Username"
+          className={classes.textField}
+          value={values.username}
+          onChange={handleChange('username')}
+          margin="normal"
+        />
+        <TextField
+          required
+          id="password"
+          label="Password"
+          className={classes.textField}
+          value={values.password}
+          onChange={handleChange('password')}
+          margin="normal"
+        />
+        <Button onClick={ () => history.push('/account/123')} variant="contained" color="primary" className={classes.button}>Create</Button>
+      </form>
+    </div>
+  );
 }
-
 
 export default CreateAccount;
