@@ -1,23 +1,37 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 
 const useStyles = makeStyles(theme => ({
-  container: {
+  mainContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  headerContainer: {
+    width: '100%',
+    maxWidth: 500,
+    margin: '40px 0px',
+  },
+  header2: {
+    margin: '65px 0px',
+    fontWeight: 250
+  },
+  formContainer1: {
     backgroundColor: 'white'
   },
-  formContainer: {
+  formContainer2: {
     display: 'flex',
-    flexWrap: 'wrap',
-    marginLeft: '32px'
+    flexWrap: 'wrap'
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 200,
+    width: '100%'
   },
   dense: {
     marginTop: 19,
@@ -26,7 +40,12 @@ const useStyles = makeStyles(theme => ({
     width: 200,
   },
   button: {
-    margin: theme.spacing(1),
+    textAlign: 'right',
+    marginTop: '41px',
+    marginLeft: '70%',
+    fontSize: '19px',
+    marginLeft: '69%',
+    padding: '20px 40px'
   },
 }));
 
@@ -44,33 +63,37 @@ const CreateAccount = ({ history }) => {
   };
 
   return (
-    <div className={classes.container}>
-      <header className="Account-header">
-        <Link to='/'>Welcome to Sebra!</Link>
-        <h3>Create your account.</h3>
-      </header>
-      <form className={classes.formContainer} noValidate autoComplete="off">
-        <TextField
-          required
-          autoFocus
-          id="username"
-          label="Username"
-          className={classes.textField}
-          value={values.username}
-          onChange={handleChange('username')}
-          margin="normal"
-        />
-        <TextField
-          required
-          id="password"
-          label="Password"
-          className={classes.textField}
-          value={values.password}
-          onChange={handleChange('password')}
-          margin="normal"
-        />
-        <Button onClick={ () => history.push('/account/123')} variant="contained" color="primary" className={classes.button}>Create</Button>
-      </form>
+    <div className={classes.mainContainer}>
+      <div className={classes.headerContainer}>
+        <Typography variant="h2" align="left">Welcome to Sebra!</Typography>
+        <Typography variant="h5" align="left" className={classes.header2}>Create your account.</Typography>
+      </div>
+      <div className={classes.formContainer1}>
+        <form className={classes.formContainer2} noValidate autoComplete="off">
+          <TextField
+            required
+            autoFocus
+            fullWidth
+            id="username"
+            label="Username"
+            className={classes.textField}
+            value={values.username}
+            onChange={handleChange('username')}
+            margin="normal"
+          />
+          <TextField
+            required
+            fullWidth
+            id="password"
+            label="Password"
+            className={classes.textField}
+            value={values.password}
+            onChange={handleChange('password')}
+            margin="normal"
+          />
+          <Button onClick={ () => history.push('/account/123')} variant="contained" color="primary" className={classes.button}>Create</Button>
+        </form>
+      </div>
     </div>
   );
 }
