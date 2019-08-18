@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -10,7 +11,11 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: '5%'
+  },
+  paperContainer: {
+    padding: theme.spacing(9, 6),
   },
   headerContainer: {
     width: '100%',
@@ -49,9 +54,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
 const CreateAccount = ({ history }) => {
   const classes = useStyles();
+
   const [values, setValues] = React.useState({
     username: '',
     password: '',
@@ -64,38 +69,41 @@ const CreateAccount = ({ history }) => {
 
   return (
     <div className={classes.mainContainer}>
-      <div className={classes.headerContainer}>
-        <Typography variant="h2" align="left">Welcome to Sebra!</Typography>
-        <Typography variant="h5" align="left" className={classes.header2}>Create your account.</Typography>
-      </div>
-      <div className={classes.formContainer1}>
-        <form className={classes.formContainer2} noValidate autoComplete="off">
-          <TextField
-            required
-            autoFocus
-            fullWidth
-            id="username"
-            label="Username"
-            className={classes.textField}
-            value={values.username}
-            onChange={handleChange('username')}
-            margin="normal"
-          />
-          <TextField
-            required
-            fullWidth
-            id="password"
-            label="Password"
-            className={classes.textField}
-            value={values.password}
-            onChange={handleChange('password')}
-            margin="normal"
-          />
-          <Button onClick={ () => history.push('/account/123')} variant="contained" color="primary" className={classes.button}>Create</Button>
-        </form>
-      </div>
+      <Paper className={classes.paperContainer}>
+        <div className={classes.headerContainer}>
+          <Typography variant="h2" align="left">Welcome to Sebra!</Typography>
+          <Typography variant="h5" align="left" className={classes.header2}>Create your account.</Typography>
+        </div>
+        <div className={classes.formContainer1}>
+          <form className={classes.formContainer2} noValidate autoComplete="off">
+            <TextField
+              required
+              autoFocus
+              fullWidth
+              id="username"
+              label="Username"
+              className={classes.textField}
+              value={values.username}
+              onChange={handleChange('username')}
+              margin="normal"
+            />
+            <TextField
+              required
+              fullWidth
+              id="password"
+              label="Password"
+              className={classes.textField}
+              value={values.password}
+              onChange={handleChange('password')}
+              margin="normal"
+            />
+            <Button onClick={ () => history.push('/account/123')} variant="contained" color="primary" className={classes.button}>Create</Button>
+          </form>
+        </div>
+      </Paper>
     </div>
   );
 }
+
 
 export default CreateAccount;
