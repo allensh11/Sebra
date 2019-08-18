@@ -1,9 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 
@@ -14,39 +12,38 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: '3%'
-      },
-      paperContainer: {
-        padding: theme.spacing(6, 4),
-      },
-      headerContainer: {
-        width: '100%',
-        maxWidth: 500,
-        margin: '40px 0px',
-      },
-      header2: {
-        margin: '65px 0px',
-        fontWeight: 250
-      },
-      emojiContainer: {
-        width: '50px',
-        height: '225px',
-        margin: 'auto'
-      },  
-      emoji: {
-        display: 'inline-block',
-        fontSize: '75px',
-        lineHeight: '225px',
-        textAlign: 'center',
-        paddingTop: '7px'
-      },
-      button: {
-        textAlign: 'right',
-        marginTop: '41px',
-        marginLeft: '70%',
-        fontSize: '19px',
-        marginLeft: '69%',
-        padding: '20px 40px'
-      },
+    },
+    paperContainer: {
+      padding: theme.spacing(6, 4),
+    },
+    headerContainer: {
+      width: '100%',
+      maxWidth: 500,
+      margin: '40px 0px',
+    },
+    header2: {
+      margin: '65px 0px',
+      fontWeight: 250
+    },
+    emojiContainer: {
+      width: '50px',
+      height: '225px',
+      margin: 'auto'
+    },  
+    emoji: {
+      display: 'inline-block',
+      fontSize: '75px',
+      lineHeight: '225px',
+      textAlign: 'center',
+      paddingTop: '7px'
+    },
+    button: {
+      textAlign: 'right',
+      marginTop: '41px',
+      marginLeft: '69%',
+      fontSize: '19px',
+      padding: '20px 40px'
+    },
 }));
 
 const CompletedPayment = ({ customerId, history }) => {
@@ -55,7 +52,7 @@ const CompletedPayment = ({ customerId, history }) => {
         <div className={classes.mainContainer}>
             <Paper className={classes.paperContainer}>
                 <div className={classes.headerContainer}>
-                    <Typography variant="h2" align="left">Paid with Sebra!</Typography>
+                    <Typography variant="h2" align="left">Paid with Lebra!</Typography>
                     <Typography variant="h5" align="left" className={classes.header2}>Your account.</Typography>
                 </div>
                 <div className={classes.emojiContainer}>

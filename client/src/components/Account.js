@@ -1,188 +1,223 @@
-/* import React from 'react';
-import { Link } from 'react-router-dom';
-import './Account.css';
-import { Button, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText } from 'reactstrap';
-
-
-const Account = ({ customerId, history }) => (
-    <div className="Account-container">
-        
-        <div className="Account-container-2">
-            <ListGroup>
-                <ListGroupItem>
-                    <ListGroupItemHeading>Tech Backpack</ListGroupItemHeading>
-                    <ListGroupItemText>Reverse Denim</ListGroupItemText>
-                    <ListGroupItemText>Quanity: 1</ListGroupItemText>
-                    <ListGroupItemText>$65</ListGroupItemText>
-                </ListGroupItem>
-                <ListGroupItem>
-                    <ListGroupItemHeading>The Twill Zip Tote</ListGroupItemHeading>
-                    <ListGroupItemText>Black Leather</ListGroupItemText>
-                    <ListGroupItemText>Quanity: 1</ListGroupItemText>
-                    <ListGroupItemText>$65</ListGroupItemText>
-                </ListGroupItem>
-                <ListGroupItem>
-                    <ListGroupItemHeading>Stupid Expensive Scarf</ListGroupItemHeading>
-                    <ListGroupItemText>Black</ListGroupItemText>
-                    <ListGroupItemText>Quanity: 2</ListGroupItemText>
-                    <ListGroupItemText>$65</ListGroupItemText>
-                </ListGroupItem>
-            </ListGroup>
-            <ListGroup>
-                <ListGroupItem>
-                    <ListGroupItemText>Subtotal: $398</ListGroupItemText>
-                    <ListGroupItemText>Shipping: Free</ListGroupItemText>
-                    <ListGroupItemText>Taxes: $12.12</ListGroupItemText>
-                </ListGroupItem>
-                <ListGroupItem>
-                    <ListGroupItemText>Total: $410.12</ListGroupItemText>
-                </ListGroupItem>
-            </ListGroup>
-        </div>
-    </div>
-)
-
-
-export default Account; */
-
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import Divider from '@material-ui/core/Divider';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
-  paper: {
-    height: 140,
-    width: 100,
+  leftContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '2%',
+    width: '50%'
   },
-  control: {
-    padding: theme.spacing(2),
+  paperLeftContainer: {
+    padding: theme.spacing(6, 6),
+  },
+  rightContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'column',
+    margin: 'auto',
+    width: '50%'
+  },
+  paperRightContainer: {
+    padding: theme.spacing(6, 6),
+    backgroundColor: 'rgba(250,250,250)'
+  },
+  headerContainer: {
+    width: '100%',
+    maxWidth: 500,
+    margin: '40px 0px',
+  },
+  header2: {
+    margin: '65px 0px',
+    fontWeight: 250
+  },
+  balanceContainer: {
+    width: '50px',
+    height: '225px',
+    margin: 'auto'
+  },  
+  balance: {
+    display: 'inline-block',
+    fontSize: '75px',
+    lineHeight: '225px',
+    textAlign: 'center',
+    paddingTop: '7px'
   },
   button: {
-    margin: theme.spacing(1),
+    textAlign: 'right',
+    marginTop: '41px',
+    marginLeft: '69%',
+    fontSize: '19px',
+    padding: '20px 40px'
   },
-  rootTable: {
-    width: '100%',
-    marginTop: theme.spacing(3),
-    overflowX: 'auto',
-    backgroundColor: 'white'
+  cartItem: {
+    margin: theme.spacing(1, 2),
   },
-  table: {
-    minWidth: 700,
+  totalsContainer: {
+    paddingTop: '100px',
   },
+  totalsItem: {
+    margin: theme.spacing(0.25, 2),
+  }
 }));
 
-const TAX_RATE = 0.07;
-
-function ccyFormat(num) {
-    return `${num.toFixed(2)}`;
-  }
-  
-  function priceRow(qty, unit) {
-    return qty * unit;
-  }
-  
-  function createRow(desc, qty, unit) {
-    const price = priceRow(qty, unit);
-    return { desc, qty, unit, price };
-  }
-  
-  function subtotal(items) {
-    return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
-  }
-  
-  const rows = [
-    createRow('Paperclips (Box)', 100, 1.15),
-    createRow('Paper (Case)', 10, 45.99),
-    createRow('Waste Basket', 2, 17.99),
-];
-
-const invoiceSubtotal = subtotal(rows);
-const invoiceTaxes = TAX_RATE * invoiceSubtotal;
-const invoiceTotal = invoiceTaxes + invoiceSubtotal;
 
 
 const SpacingGrid = ({ customerId, history }) => {
-  const [spacing, setSpacing] = React.useState(2);
+
   const classes = useStyles();
 
-  function handleChange(event, value) {
-    setSpacing(Number(value));
-  }
 
   return (
-    <Grid container className={classes.root} spacing={2}>
-      <Grid item xs={12}>
-        <Grid container justify="center" spacing={spacing}>
-            <Grid item>
-                {/* <Paper className={classes.paper}> */}
-                    <header className="Account-header">
-                        <Link>Pay with Lebra.</Link>
-                        <h3>Your account.</h3>
-                    </header>
-                    <div className='Account'>
-                        <div className='Account-balance'>
-                           <h2>$5</h2>
-                        </div>
-                        <Button onClick={ () => history.push(`/account/${customerId}/completed`) } variant="contained" color="primary" className={classes.button}>
-                            Pay
-                        </Button>
-                    </div>
-                {/* </Paper> */}
-            </Grid>
-            <Grid item>
-                {/* <Paper className={classes.root}> */}
-                <div className={classes.rootTable}>
-                    <Table className={classes.table}>
-                        <TableHead>
-                        <TableRow>
-                            <TableCell>Desc</TableCell>
-                            <TableCell align="right">Qty.</TableCell>
-                            <TableCell align="right">@</TableCell>
-                            <TableCell align="right">Price</TableCell>
-                        </TableRow>
-                        </TableHead>
-                        <TableBody>
-                        {rows.map(row => (
-                            <TableRow key={row.desc}>
-                            <TableCell>{row.desc}</TableCell>
-                            <TableCell align="right">{row.qty}</TableCell>
-                            <TableCell align="right">{row.unit}</TableCell>
-                            <TableCell align="right">{ccyFormat(row.price)}</TableCell>
-                            </TableRow>
-                        ))}
-
-                        <TableRow>
-                            <TableCell rowSpan={3} />
-                            <TableCell colSpan={2}>Subtotal</TableCell>
-                            <TableCell align="right">{ccyFormat(invoiceSubtotal)}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>Tax</TableCell>
-                            <TableCell align="right">{`${(TAX_RATE * 100).toFixed(0)} %`}</TableCell>
-                            <TableCell align="right">{ccyFormat(invoiceTaxes)}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell colSpan={2}>Total</TableCell>
-                            <TableCell align="right">{ccyFormat(invoiceTotal)}</TableCell>
-                        </TableRow>
-                        </TableBody>
-                    </Table>
-                </div>
-                {/* </Paper> */}
-            </Grid>
-        </Grid>
+    <Grid container className={classes.root} spacing={2} >
+      <Grid item xs={5} className={classes.leftContainer}>
+        <Paper className={classes.paperLeftContainer}>
+            <div className={classes.headerContainer}>
+                <Typography variant="h2" align="left">Pay with Lebra.</Typography>
+                <Typography variant="h5" align="left" className={classes.header2}>Your account.</Typography>
+            </div>
+            <div className={classes.balanceContainer}>
+              <Typography className={classes.balance} variant="h2">$5</Typography>
+            </div>
+            <Button onClick={ () => history.push(`/account/${customerId}/completed`) } variant="contained" color="primary" className={classes.button}>
+              Pay
+            </Button>
+        </Paper>
+      </Grid>
+      <Grid item xs={7} className={classes.rightContainer}>
+        <Paper className={classes.paperRightContainer}>
+          <div className={classes.cartItemsContainer}>
+            <div className={classes.cartItem}>
+              <Grid container alignItems="center">
+                <Grid item xs>
+                  <Typography gutterBottom variant="h5">
+                    Tech Backpack
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography gutterBottom variant="h6">
+                    $65.00
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Typography color="textSecondary" variant="body2">
+                Reverse Denim
+                <br/>
+                Quanity: 1
+              </Typography>
+            </div>
+            <Divider variant="middle" />
+            <div className={classes.cartItem}>
+              <Grid container alignItems="center">
+                <Grid item xs>
+                  <Typography gutterBottom variant="h5">
+                    Stupid Expensive Scarf
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography gutterBottom variant="h6">
+                    $95.00
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Typography color="textSecondary" variant="body2">
+                Black
+                <br/>
+                Quanity: 2
+              </Typography>
+            </div>
+            <Divider variant="middle" />
+            <div className={classes.cartItem}>
+              <Grid container alignItems="center">
+                <Grid item xs>
+                  <Typography gutterBottom variant="h5">
+                    The Twill Zip Tote
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography gutterBottom variant="h6">
+                    $85.00
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Typography color="textSecondary" variant="body2">
+                Black Leather
+                <br/>
+                Quanity: 1
+              </Typography>
+            </div>
+            <Divider variant="middle" />
+          </div>
+          <div className={classes.totalsContainer}>
+            <div className={classes.totalsItem}>
+              <Grid container alignItems="center">
+                <Grid item xs>
+                  <Typography gutterBottom color="textSecondary" variant="h6">
+                    Subtotal:
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography gutterBottom color="textSecondary" variant="h6">
+                    $398.00
+                  </Typography>
+                </Grid>
+              </Grid>
+            </div>
+            <div className={classes.totalsItem}>
+              <Grid container alignItems="center">
+                <Grid item xs>
+                  <Typography gutterBottom color="textSecondary" variant="h6">
+                    Shipping:
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography gutterBottom color="textSecondary" variant="h6">
+                    Free
+                  </Typography>
+                </Grid>
+              </Grid>
+            </div>
+            <div className={classes.totalsItem}>
+              <Grid container alignItems="center">
+                <Grid item xs>
+                  <Typography gutterBottom color="textSecondary" variant="h6">
+                    Taxes:
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography gutterBottom color="textSecondary" variant="h6">
+                    $12.12
+                  </Typography>
+                </Grid>
+              </Grid>
+            </div>
+            <Divider variant="middle" />
+            <div className={classes.totalsItem}>
+              <Grid container alignItems="center">
+                <Grid item xs>
+                  <Typography gutterBottom variant="h5">
+                    Total:
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography gutterBottom variant="h6">
+                    $410.12
+                  </Typography>
+                </Grid>
+              </Grid>
+            </div>
+          </div>
+        </Paper>
       </Grid>
     </Grid>
   );

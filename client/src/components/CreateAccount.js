@@ -47,9 +47,8 @@ const useStyles = makeStyles(theme => ({
   button: {
     textAlign: 'right',
     marginTop: '41px',
-    marginLeft: '70%',
-    fontSize: '19px',
     marginLeft: '69%',
+    fontSize: '19px',
     padding: '20px 40px'
   },
 }));
