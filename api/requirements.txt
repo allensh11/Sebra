@@ -1,4 +1,4 @@
-Flask==0.12.2
+Flask==0.12.e
 flask-restful==0.3.6
 markdown==2.6.11
 git+git://github.com/jnsead/pylibra.git@master#egg=pylibra
