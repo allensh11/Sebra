@@ -25,6 +25,10 @@ def account(words=None):
     }
     return account_details
 
+def getAccount(mnemonic):
+    wallet = LibraWallet(mnemonic)
+    return wallet.get_account(0)
+
 def balance(account):
     account_state = client.get_account_state(account)
     if client.get_account_state(account) == None or round(client.get_account_state(account).balance/1000000) == 0:
@@ -33,8 +37,9 @@ def balance(account):
         balance = round(client.get_account_state(account).balance/1000000)
     return balance
 
-def mint(account, amount):
-    balance(account)
+def mint(mnemonic, amount):
+    wallet = LibraWallet(mnemonic)
+    account = wallet.get_account(0)
     client.mint_with_faucet(account, int(amount)*1000000)
     return balance(account)
     

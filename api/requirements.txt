@@ -1,5 +1,5 @@
 Flask==0.12.2
 flask-restful==0.3.6
 markdown==2.6.11
-pylibra==0.1.10
+git+git://github.com/jnsead/pylibra.git@master#egg=pylibra
 PyQRCode==1.2.1
