@@ -1,4 +1,4 @@
-#Libra Wallet in Python
+#Libra Wallet in Python 
 from pylibra import LibraClient, LibraWallet
 from pylibra.transaction import TransferTransaction
 import pyqrcode, sys

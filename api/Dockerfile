@@ -11,4 +11,4 @@ COPY . .
 #RUN cd /usr/src/app/
 #RUN echo $(ls)
 
-CMD [ "python", "./run.py" ]
+CMD [ "python3", "./run.py" ]
