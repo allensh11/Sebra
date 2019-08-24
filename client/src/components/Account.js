@@ -11,54 +11,95 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: 'white',
+    marginTop: '8px',
+    [theme.breakpoints.down('1125')]: {
+      flexDirection: 'column'
+    },
   },
   leftContainer: {
     display: 'flex',
     justifyContent: 'center',
-    marginTop: '2%',
-    width: '50%'
+    marginTop: '1%',
+    width: '50%',
+    [theme.breakpoints.down('1125')]: {
+      margin: '1% auto 2%',
+    },
   },
   paperLeftContainer: {
-    padding: theme.spacing(6, 6),
-  },
-  rightContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-    margin: 'auto',
-    width: '50%'
-  },
-  paperRightContainer: {
-    padding: theme.spacing(6, 6),
-    backgroundColor: 'rgba(250,250,250)'
+    padding: theme.spacing(3, 3),
+    [theme.breakpoints.down('1125')]: {
+      minWidth: '163%',
+      padding: theme.spacing(3, 4),
+    },
   },
   headerContainer: {
     width: '100%',
-    maxWidth: 500,
+    /* maxWidth: 500, */
     margin: '40px 0px',
+    [theme.breakpoints.down('1125')]: {
+      margin: '0'
+    },
   },
   header2: {
     margin: '65px 0px',
-    fontWeight: 250
+    fontWeight: 250,
+    [theme.breakpoints.down('1125')]: {
+      margin: '25px 0px'
+    },
   },
   balanceContainer: {
     width: '50px',
     height: '225px',
-    margin: 'auto'
+    margin: 'auto',
+    [theme.breakpoints.down('1125')]: {
+      height: '140px',
+    },
   },  
   balance: {
     display: 'inline-block',
     fontSize: '75px',
     lineHeight: '225px',
     textAlign: 'center',
-    paddingTop: '7px'
+    paddingTop: '7px',
+    [theme.breakpoints.down('1125')]: {
+      fontSize: '65px',
+      lineHeight: '140px',
+    },
   },
   button: {
     textAlign: 'right',
     marginTop: '41px',
-    marginLeft: '69%',
+    marginLeft: '70%',
     fontSize: '19px',
-    padding: '20px 40px'
+    padding: '20px 40px',
+    [theme.breakpoints.down('1125')]: {
+      marginTop: '25px',
+      marginLeft: '0%',
+      padding: '15px 30px',
+    },
+  },
+  rightContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'column',
+    margin: 'auto',
+    width: '50%',
+    [theme.breakpoints.down('1125')]: {
+      padding: '7px 0px 7px 18px',
+      marginLeft: '0',
+      marginRight: 'auto',
+    },
+  },
+  paperRightContainer: {
+    padding: theme.spacing(3, 3),
+    backgroundColor: 'rgba(250,250,250)',
+    [theme.breakpoints.down('1125')]: {
+      minWidth: '190%',
+    },
+    [theme.breakpoints.down('700')]: {
+      padding: theme.spacing(1, 1),
+      minWidth: '190%',
+    },
   },
   cartItem: {
     margin: theme.spacing(1, 2),
@@ -78,8 +119,8 @@ const Account = ({ customerId, history }) => {
   const classes = useStyles();
 
   return (
-    <Grid container className={classes.root} spacing={2} >
-      <Grid item xs={5} className={classes.leftContainer}>
+    <Grid container className={classes.root} /* spacing={2} */ >
+      <Grid item xs className={classes.leftContainer}>
         <Paper className={classes.paperLeftContainer}>
             <div className={classes.headerContainer}>
                 <Typography variant="h2" align="left">Pay with Lebra.</Typography>
@@ -93,7 +134,7 @@ const Account = ({ customerId, history }) => {
             </Button>
         </Paper>
       </Grid>
-      <Grid item xs={7} className={classes.rightContainer}>
+      <Grid item xs className={classes.rightContainer}>
         <Paper className={classes.paperRightContainer}>
           <div className={classes.cartItemsContainer}>
             <div className={classes.cartItem}>

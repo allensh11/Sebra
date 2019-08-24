@@ -11,10 +11,10 @@ const useStyles = makeStyles(theme => ({
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      marginTop: '3%'
+      marginTop: '1.5%'
   },
   paperContainer: {
-    padding: theme.spacing(6, 4),
+    padding: theme.spacing(3, 2),
   },
   headerContainer: {
     width: '100%',
