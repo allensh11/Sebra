@@ -73,10 +73,9 @@ const useStyles = makeStyles(theme => ({
 
 
 
-const SpacingGrid = ({ customerId, history }) => {
+const Account = ({ customerId, history }) => {
 
   const classes = useStyles();
-
 
   return (
     <Grid container className={classes.root} spacing={2} >
@@ -223,4 +222,5 @@ const SpacingGrid = ({ customerId, history }) => {
   );
 }
 
-export default SpacingGrid;
+
+export default Account;
