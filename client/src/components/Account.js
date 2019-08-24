@@ -15,11 +15,11 @@ const useStyles = makeStyles(theme => ({
   leftContainer: {
     display: 'flex',
     justifyContent: 'center',
-    marginTop: '2%',
+    marginTop: '1%',
     width: '50%'
   },
   paperLeftContainer: {
-    padding: theme.spacing(6, 6),
+    padding: theme.spacing(3, 3),
   },
   rightContainer: {
     display: 'flex',
@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     width: '50%'
   },
   paperRightContainer: {
-    padding: theme.spacing(6, 6),
+    padding: theme.spacing(3, 3),
     backgroundColor: 'rgba(250,250,250)'
   },
   headerContainer: {

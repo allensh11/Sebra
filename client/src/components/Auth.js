@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -12,18 +13,21 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: '5%'
+    marginTop: '2.5%'
   },
   paperContainer: {
-    padding: theme.spacing(9, 6),
+    padding: theme.spacing(6, 4),
   },
   headerContainer: {
     width: '100%',
     maxWidth: 500,
     margin: '40px 0px',
   },
+  header1: {
+    marginLeft: '8px'
+  },
   header2: {
-    margin: '65px 0px',
+    margin: '65px 0px 65px 8px',
     fontWeight: 250
   },
   formContainer1: {
@@ -51,9 +55,12 @@ const useStyles = makeStyles(theme => ({
     fontSize: '19px',
     padding: '20px 40px'
   },
+  link: {
+    textDecoration: 'none'
+  }
 }));
 
-const CreateAccount = ({ history }) => {
+const Auth = ({ pathname, history }) => {
   const classes = useStyles();
 
   const [values, setValues] = React.useState({
@@ -65,13 +72,15 @@ const CreateAccount = ({ history }) => {
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
-
+  console.log(pathname)
   return (
     <div className={classes.mainContainer}>
       <Paper className={classes.paperContainer}>
         <div className={classes.headerContainer}>
-          <Typography variant="h2" align="left">Welcome to Sebra!</Typography>
-          <Typography variant="h5" align="left" className={classes.header2}>Create your account.</Typography>
+          <Typography variant="h2" align="left" className={classes.header1}>Welcome to Sebra!</Typography>
+          <Typography variant="h5" align="left" className={classes.header2}>
+            { pathname === '/login' ? 'Login.' : 'Create your account.' }  
+          </Typography>
         </div>
         <div className={classes.formContainer1}>
           <form className={classes.formContainer2} noValidate autoComplete="off">
@@ -96,8 +105,17 @@ const CreateAccount = ({ history }) => {
               onChange={handleChange('password')}
               margin="normal"
             />
-            <Button onClick={ () => history.push('/account/123')} variant="contained" color="primary" className={classes.button}>Create</Button>
+            <Button onClick={ () => history.push('/account/123')} variant="contained" color="primary" className={classes.button}>
+              { pathname === '/login' ? 'Login' : 'Create' }  
+            </Button>
           </form>
+          { 
+            pathname === '/login' 
+            ? <Typography variant="body2" align="left">
+                <Link to='/create-account' className={classes.link}>New to Sebra? Create your account here.</Link>
+              </Typography> 
+            : null
+          }
         </div>
       </Paper>
     </div>
@@ -105,4 +123,4 @@ const CreateAccount = ({ history }) => {
 }
 
 
-export default CreateAccount;
+export default Auth;
