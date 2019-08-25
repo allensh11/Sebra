@@ -112,11 +112,35 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-
+{ const cart = [
+  { 
+    itemName: 'Tech Backpack', 
+    price: 65.00,
+    description: 'Reverse Denim',
+    quantity: 1
+  },
+  {
+    itemName: 'Stupid Expensive Scarf', 
+    price: 95.00,
+    description: 'Black',
+    quantity: 2
+  },
+  {
+    itemName: 'The Twill Zip Tote', 
+    price: 85.00,
+    description: 'Black Leather',
+    quantity: 1
+  }
+]}
 
 const Account = ({ customerId, history }) => {
 
   const classes = useStyles();
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    history.push(`/account/${customerId}/completed`);
+  }
 
   return (
     <Grid container className={classes.root} /* spacing={2} */ >
@@ -129,7 +153,7 @@ const Account = ({ customerId, history }) => {
             <div className={classes.balanceContainer}>
               <Typography className={classes.balance} variant="h2">$5</Typography>
             </div>
-            <Button onClick={ () => history.push(`/account/${customerId}/completed`) } variant="contained" color="primary" className={classes.button}>
+            <Button onClick={ e => handleSubmit(e) } variant="contained" color="primary" className={classes.button}>
               Pay
             </Button>
         </Paper>
@@ -137,6 +161,11 @@ const Account = ({ customerId, history }) => {
       <Grid item xs className={classes.rightContainer}>
         <Paper className={classes.paperRightContainer}>
           <div className={classes.cartItemsContainer}>
+          {
+            /* cart.map(cartItem => (
+
+            )) */
+          }
             <div className={classes.cartItem}>
               <Grid container alignItems="center">
                 <Grid item xs>
