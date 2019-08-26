@@ -5,6 +5,9 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { useDispatch } from 'react-redux';
+import { login } from '../store/actions/auth';
+import { createUser } from '../store/actions/users';
 
 
 const useStyles = makeStyles(theme => ({
@@ -63,16 +66,29 @@ const useStyles = makeStyles(theme => ({
 const Auth = ({ pathname, history }) => {
   const classes = useStyles();
 
-  const [values, setValues] = React.useState({
+  const [state, setState] = React.useState({
     username: '',
     password: '',
     error: ''
   });
 
-  const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
+  const handleChange = id => e => {
+    setState({ 
+      ...state, 
+      [id]: e.target.value }
+    )
   };
-  console.log(pathname)
+  
+  const dispatch = useDispatch();
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log('auth submit');
+    pathname === '/login' 
+      ? dispatch(login(state, history)) 
+      : dispatch(createUser(state, history))
+  }
+
   return (
     <div className={classes.mainContainer}>
       <Paper className={classes.paperContainer}>
@@ -91,7 +107,7 @@ const Auth = ({ pathname, history }) => {
               id="username"
               label="Username"
               className={classes.textField}
-              value={values.username}
+              value={state.username}
               onChange={handleChange('username')}
               margin="normal"
             />
@@ -101,11 +117,11 @@ const Auth = ({ pathname, history }) => {
               id="password"
               label="Password"
               className={classes.textField}
-              value={values.password}
+              value={state.password}
               onChange={handleChange('password')}
               margin="normal"
             />
-            <Button onClick={ () => history.push('/account/123')} variant="contained" color="primary" className={classes.button}>
+            <Button onClick={ e => handleSubmit(e) } variant="contained" color="primary" className={classes.button}>
               { pathname === '/login' ? 'Login' : 'Create' }  
             </Button>
           </form>

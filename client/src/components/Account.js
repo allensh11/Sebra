@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateOrder } from '../store/actions/orders';
+import { calcLineItemCost, calcSubtotal, calcTaxes, calcTotal } from '../util';
 
 
 const useStyles = makeStyles(theme => ({
@@ -112,11 +115,48 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const cart = [
+  { 
+    id: 1,
+    itemName: 'Tech Backpack', 
+    unitPrice: 65.00,
+    description: 'Reverse Denim',
+    quantity: 1
+  },
+  {
+    id: 2,
+    itemName: 'Stupid Expensive Scarf', 
+    unitPrice: 35.00,
+    description: 'Black',
+    quantity: 2
+  },
+  {
+    id: 3,
+    itemName: 'The Twill Zip Tote', 
+    unitPrice: 85.00,
+    description: 'Black Leather',
+    quantity: 1
+  }
+]
+const shippingCost = 3.00;
+const taxRate = 0.0875;
+
+const subtotal = calcSubtotal(cart);
+const taxes = calcTaxes(subtotal, shippingCost, taxRate);
 
 
 const Account = ({ customerId, history }) => {
 
   const classes = useStyles();
+
+  const auth = useSelector(store => store.auth);
+  const dispatch = useDispatch();
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log('account submit');
+    dispatch(updateOrder(cart, auth, history));
+  }
 
   return (
     <Grid container className={classes.root} /* spacing={2} */ >
@@ -127,9 +167,9 @@ const Account = ({ customerId, history }) => {
                 <Typography variant="h5" align="left" className={classes.header2}>Your account.</Typography>
             </div>
             <div className={classes.balanceContainer}>
-              <Typography className={classes.balance} variant="h2">$5</Typography>
+              <Typography className={classes.balance} variant="h2">{ '$' + auth.balance }</Typography>
             </div>
-            <Button onClick={ () => history.push(`/account/${customerId}/completed`) } variant="contained" color="primary" className={classes.button}>
+            <Button onClick={ e => handleSubmit(e) } variant="contained" color="primary" className={classes.button}>
               Pay
             </Button>
         </Paper>
@@ -137,66 +177,32 @@ const Account = ({ customerId, history }) => {
       <Grid item xs className={classes.rightContainer}>
         <Paper className={classes.paperRightContainer}>
           <div className={classes.cartItemsContainer}>
-            <div className={classes.cartItem}>
-              <Grid container alignItems="center">
-                <Grid item xs>
-                  <Typography gutterBottom variant="h5">
-                    Tech Backpack
+          {
+            cart.map(cartItem => (
+              <Fragment key={ cartItem.id }>
+                <div className={classes.cartItem}>
+                  <Grid container alignItems="center">
+                    <Grid item xs>
+                      <Typography gutterBottom variant="h5">
+                        { cartItem.itemName }
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography gutterBottom variant="h6">
+                        { '$ ' + calcLineItemCost(cartItem.unitPrice, cartItem.quantity) }
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Typography color="textSecondary" variant="body2">
+                    { cartItem.description }
+                    <br/>
+                    { 'Quantity: ' + cartItem.quantity }
                   </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography gutterBottom variant="h6">
-                    $65.00
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Typography color="textSecondary" variant="body2">
-                Reverse Denim
-                <br/>
-                Quanity: 1
-              </Typography>
-            </div>
-            <Divider variant="middle" />
-            <div className={classes.cartItem}>
-              <Grid container alignItems="center">
-                <Grid item xs>
-                  <Typography gutterBottom variant="h5">
-                    Stupid Expensive Scarf
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography gutterBottom variant="h6">
-                    $95.00
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Typography color="textSecondary" variant="body2">
-                Black
-                <br/>
-                Quanity: 2
-              </Typography>
-            </div>
-            <Divider variant="middle" />
-            <div className={classes.cartItem}>
-              <Grid container alignItems="center">
-                <Grid item xs>
-                  <Typography gutterBottom variant="h5">
-                    The Twill Zip Tote
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography gutterBottom variant="h6">
-                    $85.00
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Typography color="textSecondary" variant="body2">
-                Black Leather
-                <br/>
-                Quanity: 1
-              </Typography>
-            </div>
-            <Divider variant="middle" />
+                </div>
+                <Divider variant="middle" />
+              </Fragment>
+            ))
+          }
           </div>
           <div className={classes.totalsContainer}>
             <div className={classes.totalsItem}>
@@ -208,7 +214,7 @@ const Account = ({ customerId, history }) => {
                 </Grid>
                 <Grid item>
                   <Typography gutterBottom color="textSecondary" variant="h6">
-                    $398.00
+                    { '$' + subtotal }
                   </Typography>
                 </Grid>
               </Grid>
@@ -222,7 +228,7 @@ const Account = ({ customerId, history }) => {
                 </Grid>
                 <Grid item>
                   <Typography gutterBottom color="textSecondary" variant="h6">
-                    Free
+                    { '$' + shippingCost.toFixed(2) }
                   </Typography>
                 </Grid>
               </Grid>
@@ -236,7 +242,7 @@ const Account = ({ customerId, history }) => {
                 </Grid>
                 <Grid item>
                   <Typography gutterBottom color="textSecondary" variant="h6">
-                    $12.12
+                    { '$' + taxes }
                   </Typography>
                 </Grid>
               </Grid>
@@ -251,7 +257,7 @@ const Account = ({ customerId, history }) => {
                 </Grid>
                 <Grid item>
                   <Typography gutterBottom variant="h6">
-                    $410.12
+                    { '$' + calcTotal(subtotal, shippingCost, taxes) }
                   </Typography>
                 </Grid>
               </Grid>

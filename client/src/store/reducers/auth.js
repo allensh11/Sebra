@@ -1,7 +1,7 @@
 import { SET_AUTH } from '../constants';
 
 
-/* const authReducer = (state = {}, action) => {
+const authReducer = (state = {}, action) => {
     switch(action.type) {
         case SET_AUTH: 
             return action.auth;
@@ -11,4 +11,4 @@ import { SET_AUTH } from '../constants';
 }
 
 
-export default authReducer; */
+export default authReducer;
