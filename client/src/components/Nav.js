@@ -42,7 +42,7 @@ const Nav = ({ pathname, history }) => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-          <Link to='/' className={classes.link}>Sebra</Link>
+          <Link to={ auth.id ? `/account/${auth.id}` : '/login' } className={classes.link}>Sebra</Link>
           </Typography>
           <Button onClick={ e => handleSubmit(e) } color="inherit">
             { auth.id ? 'Logout' : 'Login' }

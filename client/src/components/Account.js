@@ -5,6 +5,8 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateOrder } from '../store/actions/orders';
 import { calcLineItemCost, calcSubtotal, calcTaxes, calcTotal } from '../util';
 
 
@@ -113,10 +115,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const auth = {
-  id: 123,
-  balance: 5
-}
 const cart = [
   { 
     id: 1,
@@ -151,10 +149,13 @@ const Account = ({ customerId, history }) => {
 
   const classes = useStyles();
 
+  const auth = useSelector(store => store.auth);
+  const dispatch = useDispatch();
+
   const handleSubmit = e => {
     e.preventDefault();
     console.log('account submit');
-    history.push(`/account/${auth.id}/completed`);
+    dispatch(updateOrder(cart, auth, history));
   }
 
   return (
