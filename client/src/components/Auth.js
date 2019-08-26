@@ -60,6 +60,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const auth = {
+  id: 123,
+  balance: 5
+}
+
 const Auth = ({ pathname, history }) => {
   const classes = useStyles();
 
@@ -78,7 +83,8 @@ const Auth = ({ pathname, history }) => {
   
   const handleSubmit = e => {
     e.preventDefault();
-    history.push('/account/123')
+    console.log('auth submit');
+    history.push(`/account/${auth.id}`);
   }
 
   return (

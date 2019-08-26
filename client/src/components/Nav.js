@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -20,8 +20,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Nav = () => {
+const auth = {
+  id: 123,
+  balance: 5
+}
+
+const Nav = ({ history }) => {
   const classes = useStyles();
+
+  useEffect(() => auth.id ? history.push(`/account/${auth.id}`) : history.push('/login'), [history]);
 
   return (
     <div className={classes.root}>
