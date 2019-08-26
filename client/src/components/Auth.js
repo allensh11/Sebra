@@ -5,6 +5,9 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { useDispatch } from 'react-redux';
+import { login } from '../store/actions/auth';
+import { createUser } from '../store/actions/users';
 
 
 const useStyles = makeStyles(theme => ({
@@ -60,11 +63,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const auth = {
-  id: 123,
-  balance: 5
-}
-
 const Auth = ({ pathname, history }) => {
   const classes = useStyles();
 
@@ -81,10 +79,14 @@ const Auth = ({ pathname, history }) => {
     )
   };
   
+  const dispatch = useDispatch();
+
   const handleSubmit = e => {
     e.preventDefault();
     console.log('auth submit');
-    history.push(`/account/${auth.id}`);
+    pathname === '/login' 
+      ? dispatch(login(state, history)) 
+      : dispatch(createUser(state, history))
   }
 
   return (

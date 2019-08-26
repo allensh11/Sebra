@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../store/actions/auth';
 
 
 const useStyles = makeStyles(theme => ({
@@ -20,15 +22,20 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const auth = {
-  id: 123,
-  balance: 5
-}
-
-const Nav = ({ history }) => {
+const Nav = ({ pathname, history }) => {
   const classes = useStyles();
+  const auth = useSelector(store => store.auth);
 
-  useEffect(() => auth.id ? history.push(`/account/${auth.id}`) : history.push('/login'), [history]);
+  if(pathname === '/') {
+    auth.id ? history.push(`/account/${auth.id}`) : history.push('/login'); 
+  }
+
+  const dispatch = useDispatch();
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    auth.id ? dispatch(logout(history)) : history.push('/login');
+  }
 
   return (
     <div className={classes.root}>
@@ -37,8 +44,8 @@ const Nav = ({ history }) => {
           <Typography variant="h6" className={classes.title}>
           <Link to='/' className={classes.link}>Sebra</Link>
           </Typography>
-          <Button color="inherit">
-            <Link to='/login' className={classes.link}>Login</Link>
+          <Button onClick={ e => handleSubmit(e) } color="inherit">
+            { auth.id ? 'Logout' : 'Login' }
           </Button>
         </Toolbar>
       </AppBar>
