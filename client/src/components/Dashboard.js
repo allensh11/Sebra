@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import Snippet from './Snippet';
 
 
 const useStyles = makeStyles(theme => ({
@@ -40,16 +40,6 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3, 3),
     backgroundColor: 'rgba(250,250,250)',
   },
-  button: {
-    margin: theme.spacing(1),
-    fontSize: '30px',
-    padding: '20px 40px',
-    backgrounColor: '#3f51b5',
-    color: 'white'
-  },
-  input: {
-    display: 'none',
-  },
 }));
 
 const auth = {
@@ -78,9 +68,10 @@ const Dashboard = ({ businessId, history }) => {
       </Grid>
       <Grid item xs className={classes.rightContainer}>
         <Paper className={classes.paperRightContainer}>
-            <Button onClick={ () => history.push('/create-account') } variant="contained" color="primary" className={classes.button}>
+            {/* <Button variant="contained" color="primary" className={classes.button}>
                 Generate JS Snippet
-            </Button>
+            </Button> */}
+            <Snippet/>
         </Paper>
       </Grid>
     </Grid>
