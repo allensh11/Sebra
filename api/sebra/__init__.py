@@ -29,45 +29,37 @@ def index():
 #req params: 
 #   -username
 #   -password
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['POST'])
 def register():
     shelf = get_db()
-    if(request.method == 'GET'):
-        #HACK: Just gets all accounts. We should delete this later.
-        keys = list(shelf.keys())
-        accounts = []
-        for key in keys:
-            accountFromDb = shelf[key]
-            accountFromDb['balance'] = balance(accountFromDb['address'])
-            accounts.append(accountFromDb)
-        ret = {'message': 'Success', 'data': accounts}
-        return json.dumps(ret)
-    elif(request.method == 'POST'):
-        #POST: registering new      
-        if(request.form.get('username') in shelf):
-            return json.dumps({'message': 'error', 'data': 'User already registered.'})
-
-        ret = account()
-        ret['password'] = hashlib.md5(request.form.get('password').encode('utf-8')).hexdigest()
-        ret['username'] = request.form.get('username')
-        ret['type'] = "customer"
-        shelf[ret['username']] = ret
-        #Mint new libra by mnemonic
-        mintamount = 1000
-        mint(ret['mnemonic'], mintamount)
-        session['user'] = ret['username']
-        return json.dumps({'message': 'success', 'data': account(ret['mnemonic'])})
-
+    #POST: registering new      
+    if(request.form.get('username') in shelf):
+        return json.dumps({'message': 'error', 'data': 'User already registered.'})
+    acc = account()
+    acc['password'] = hashlib.md5(request.form.get('password').encode('utf-8')).hexdigest()
+    acc['username'] = request.form.get('username')
+    acc['type'] = "customer"
+    shelf[acc['username']] = acc
+    ret = {}
+    ret['username'] = acc['username']
+    ret['address'] = acc['address']
+    ret['accountBalance'] = balance(acc['address'])
+    ret['type'] = "customer"
+    #Mint new libra by mnemonic
+    mintamount = 1000
+    mint(acc['mnemonic'], mintamount)
+    session['user'] = acc['username']
+    return json.dumps({'message': 'success', 'data': ret})
 
 #-----------LOG IN-----------
 # req params: 
 #   -username
 #   -password
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['POST'])
 def login():
     reqParsed = {}
-    username =  request.args.get('username')
-    password =  request.args.get('password')
+    username =  request.form.get('username')
+    password =  request.form.get('password')
     shelf = get_db()
     if(username not in shelf):
         return json.dumps({'message': 'error', 'data': 'User not registered.'})
@@ -75,32 +67,33 @@ def login():
     passProvided = hashlib.md5(password.encode('utf-8')).hexdigest()
     if(passStored == passProvided):
         session['user'] = username
-        return json.dumps({'message': 'success', 'data': account(shelf[username]['mnemonic'])})
+        ret = {}
+        acc = account(shelf[username]['mnemonic'])
+        ret['username'] = username
+        ret['address'] = acc['address']
+        ret['accountBalance'] = balance(acc['address'])
+        ret['type'] = "customer"
+        return json.dumps({'message': 'success', 'data': ret})
     else:
         return json.dumps({'message': 'Not authorized'})
 
-
 #-----------LOG OUT-----------
 #req params: None
-@app.route('/logout', methods=['GET'])
+@app.route('/logout', methods=['POST'])
 def logout():
     session.pop('user', None)
     return json.dumps({'message': 'success', 'data': 'logged out'})
-
 
 #-----------TRANSACTIONS-----------
 #req params:
 #   -recipientAddress
 #   -amount
 #   -senderUsername
-@app.route('/transaction', methods=['GET'])
+@app.route('/transaction', methods=['POST'])
 def transaction():
-
-   
-
-    recipientAddress =  request.args.get('recipientAddress')
-    amount =  request.args.get('amount')
-    senderUsername=  request.args.get('senderUsername')
+    recipientAddress =  request.form.get('recipientAddress')
+    amount =  request.form.get('amount')
+    senderUsername=  request.form.get('senderUsername')
     shelf = get_db()
 
     if ('user' in session and session['user'] == senderUsername):
@@ -111,9 +104,53 @@ def transaction():
         return json.dumps({'message': 'Not authorized'})
 
 
-#Helper method to pass requests.
-def parseRequest(requestObj):
+#-----------REGISTER BUSINESS-----------
+#req params: 
+#   -username
+#   -password
+@app.route('/register', methods=['POST'])
+def register():
+    shelf = get_db()
+    #POST: registering new      
+    if(request.form.get('username') in shelf):
+        return json.dumps({'message': 'error', 'data': 'Business already registered.'})
+
+    acc = account()
+    acc['password'] = hashlib.md5(request.form.get('password').encode('utf-8')).hexdigest()
+    acc['username'] = request.form.get('username')
+    shelf[acc['username']] = acc
+    session['user'] = acc['username']
+    ret = {}
+    ret['username'] = acc['username']
+    ret['address'] = acc['address']
+    ret['accountBalance'] = balance(acc['address'])
+    ret['type'] = "business"
+
+    return json.dumps({'message': 'success', 'data': ret})
+
+
+#-----------LOG IN Business-----------
+# req params: 
+#   -username
+#   -password
+@app.route('/login', methods=['POST'])
+def login():
     reqParsed = {}
-    for key, value in requestObj:
-        requestObj[ key ] = value
-    return reqParsed
+    username =  request.form.get('username')
+    password =  request.form.get('password')
+    shelf = get_db()
+    if(username not in shelf):
+        return json.dumps({'message': 'error', 'data': 'User not registered.'})
+    passStored = shelf[username]['password']
+    passProvided = hashlib.md5(password.encode('utf-8')).hexdigest()
+    if(passStored == passProvided):
+        session['user'] = username
+        acc = account(shelf[username]['mnemonic'])
+        ret = {}
+        ret['username'] = acc['username']
+        ret['address'] = acc['address']
+        ret['accountBalance'] = balance(acc['address'])
+        ret['type'] = "business"
+        return json.dumps({'message': 'success', 'data': ret})
+    else:
+        return json.dumps({'message': 'Not authorized'})
