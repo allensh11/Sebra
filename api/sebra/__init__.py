@@ -19,17 +19,12 @@ def teardown_db(exception):
     if db is not None:
         db.close()
 
-#Return our react page?
-@app.route("/")
-def index():
-    content = "Ok"
-    return content
 
 #-----------REGISTER-----------
 #req params: 
-#   -username
+#   -username 
 #   -password
-@app.route('/register', methods=['POST'])
+@app.route('/api/register', methods=['POST'])
 def register():
     shelf = get_db()
     #POST: registering new      
@@ -55,7 +50,7 @@ def register():
 # req params: 
 #   -username
 #   -password
-@app.route('/login', methods=['POST'])
+@app.route('/api/login', methods=['POST'])
 def login():
     reqParsed = {}
     username =  request.form.get('username')
@@ -65,7 +60,7 @@ def login():
         return json.dumps({'message': 'error', 'data': 'User not registered.'})
     passStored = shelf[username]['password']
     passProvided = hashlib.md5(password.encode('utf-8')).hexdigest()
-    if(passStored == passProvided):
+    if(passStored == passProvided and shelf[username]['type'] == 'customer'):
         session['user'] = username
         ret = {}
         acc = account(shelf[username]['mnemonic'])
@@ -77,9 +72,11 @@ def login():
     else:
         return json.dumps({'message': 'Not authorized'})
 
+
+
 #-----------LOG OUT-----------
 #req params: None
-@app.route('/logout', methods=['POST'])
+@app.route('/api/logout', methods=['POST'])
 def logout():
     session.pop('user', None)
     return json.dumps({'message': 'success', 'data': 'logged out'})
@@ -89,7 +86,7 @@ def logout():
 #   -recipientAddress
 #   -amount
 #   -senderUsername
-@app.route('/transaction', methods=['POST'])
+@app.route('/api/transaction', methods=['POST'])
 def transaction():
     recipientAddress =  request.form.get('recipientAddress')
     amount =  request.form.get('amount')
@@ -108,8 +105,8 @@ def transaction():
 #req params: 
 #   -username
 #   -password
-@app.route('/register', methods=['POST'])
-def register():
+@app.route('/api/businessregister', methods=['POST'])
+def businessregister():
     shelf = get_db()
     #POST: registering new      
     if(request.form.get('username') in shelf):
@@ -129,28 +126,29 @@ def register():
     return json.dumps({'message': 'success', 'data': ret})
 
 
+
 #-----------LOG IN Business-----------
 # req params: 
 #   -username
 #   -password
-@app.route('/login', methods=['POST'])
-def login():
-    reqParsed = {}
+@app.route('/api/businesslogin', methods=['POST'])
+def businesslogin():
     username =  request.form.get('username')
     password =  request.form.get('password')
     shelf = get_db()
-    if(username not in shelf):
+    if(username not in shelf ):
         return json.dumps({'message': 'error', 'data': 'User not registered.'})
     passStored = shelf[username]['password']
     passProvided = hashlib.md5(password.encode('utf-8')).hexdigest()
-    if(passStored == passProvided):
+    if(passStored == passProvided and shelf[username]['type'] == 'business'):
         session['user'] = username
         acc = account(shelf[username]['mnemonic'])
         ret = {}
-        ret['username'] = acc['username']
+        ret['username'] = username
         ret['address'] = acc['address']
         ret['accountBalance'] = balance(acc['address'])
         ret['type'] = "business"
         return json.dumps({'message': 'success', 'data': ret})
     else:
         return json.dumps({'message': 'Not authorized'})
+
