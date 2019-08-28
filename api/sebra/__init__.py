@@ -2,7 +2,6 @@ import os, shelve, json, hashlib
 from flask import Flask, g, session, request
 from flask_restful import Resource, Api, reqparse
 from libra_actions import account, balance, mint, transfer
-
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 api = Api(app)
@@ -18,7 +17,9 @@ def teardown_db(exception):
     db = getattr(g, '_database', None)
     if db is not None:
         db.close()
-
+@app.route('/')
+def index():
+    return 'Ok'
 
 #-----------REGISTER-----------
 #req params: 
