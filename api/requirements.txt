@@ -2,3 +2,4 @@ Flask==0.12.3
 flask-restful==0.3.6
 git+git://github.com/jnsead/pylibra.git@master#egg=pylibra
 PyQRCode==1.2.1
+flask-cors==3.0.8

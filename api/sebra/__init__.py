@@ -1,9 +1,13 @@
 import os, shelve, json, hashlib
-from flask import Flask, g, session, request
+from flask import Flask, g, session, request, jsonify
 from flask_restful import Resource, Api, reqparse
 from libra_actions import account, balance, mint, transfer
+from flask_cors import CORS
+
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+CORS(app)
+
 api = Api(app)
 
 def get_db():
@@ -28,12 +32,13 @@ def index():
 @app.route('/api/register', methods=['POST'])
 def register():
     shelf = get_db()
-    #POST: registering new      
-    if(request.form.get('username') in shelf):
+    #POST: registering new     
+    data = request.get_json() 
+    if(data['username'] in shelf):
         return json.dumps({'message': 'error', 'data': 'User already registered.'})
     acc = account()
-    acc['password'] = hashlib.md5(request.form.get('password').encode('utf-8')).hexdigest()
-    acc['username'] = request.form.get('username')
+    acc['password'] = hashlib.md5(data['password'].encode('utf-8')).hexdigest()
+    acc['username'] = data['username']
     acc['type'] = "customer"
     shelf[acc['username']] = acc
     ret = {}
@@ -45,7 +50,9 @@ def register():
     mintamount = 1000
     mint(acc['mnemonic'], mintamount)
     session['user'] = acc['username']
-    return json.dumps({'message': 'success', 'data': ret})
+    response = jsonify({'message': 'success', 'data': ret})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 #-----------LOG IN-----------
 # req params: 
@@ -53,9 +60,9 @@ def register():
 #   -password
 @app.route('/api/login', methods=['POST'])
 def login():
-    reqParsed = {}
-    username =  request.form.get('username')
-    password =  request.form.get('password')
+    data = request.get_json() 
+    username =  data['username']
+    password =  data['password']
     shelf = get_db()
     if(username not in shelf):
         return json.dumps({'message': 'error', 'data': 'User not registered.'})
@@ -69,9 +76,13 @@ def login():
         ret['address'] = acc['address']
         ret['accountBalance'] = balance(acc['address'])
         ret['type'] = "customer"
-        return json.dumps({'message': 'success', 'data': ret})
+        response = jsonify({'message': 'success', 'data': ret})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
     else:
-        return json.dumps({'message': 'Not authorized'})
+        response = jsonify({'message': 'Not authorized'})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
 
 
 
@@ -89,17 +100,22 @@ def logout():
 #   -senderUsername
 @app.route('/api/transaction', methods=['POST'])
 def transaction():
-    recipientAddress =  request.form.get('recipientAddress')
-    amount =  request.form.get('amount')
-    senderUsername=  request.form.get('senderUsername')
+    data = request.get_json()
+    recipientAddress =  data['recipientAddress']
+    amount =  data['amount']
+    senderUsername=  data['senderUsername']
     shelf = get_db()
 
     if ('user' in session and session['user'] == senderUsername):
         senderMnemonic = shelf[senderUsername]['mnemonic']
         resp = transfer(senderMnemonic, recipientAddress, amount)
-        return json.dumps({'message': 'Success', 'data': 'Transferred ' + amount + 'to ' + recipientAddress})
+        response = jsonify({'message': 'Success', 'data': 'Transferred ' + amount + 'to ' + recipientAddress})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
     else :
-        return json.dumps({'message': 'Not authorized'})
+        response = jsonify({'message': 'Not authorized'})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
 
 
 #-----------REGISTER BUSINESS-----------
@@ -109,13 +125,16 @@ def transaction():
 @app.route('/api/businessregister', methods=['POST'])
 def businessregister():
     shelf = get_db()
+    data = request.get_json()
     #POST: registering new      
-    if(request.form.get('username') in shelf):
-        return json.dumps({'message': 'error', 'data': 'Business already registered.'})
+    if(data['username'] in shelf):
+        response = jsonify({'message': 'error', 'data': 'Business already registered.'})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return json.dumps(response)
 
     acc = account()
-    acc['password'] = hashlib.md5(request.form.get('password').encode('utf-8')).hexdigest()
-    acc['username'] = request.form.get('username')
+    acc['password'] = hashlib.md5(data['password'].encode('utf-8')).hexdigest()
+    acc['username'] = data['username']
     shelf[acc['username']] = acc
     session['user'] = acc['username']
     ret = {}
@@ -123,8 +142,9 @@ def businessregister():
     ret['address'] = acc['address']
     ret['accountBalance'] = balance(acc['address'])
     ret['type'] = "business"
-
-    return json.dumps({'message': 'success', 'data': ret})
+    response = jsonify({'message': 'success', 'data': ret})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 
@@ -134,8 +154,9 @@ def businessregister():
 #   -password
 @app.route('/api/businesslogin', methods=['POST'])
 def businesslogin():
-    username =  request.form.get('username')
-    password =  request.form.get('password')
+    data = request.get_json()
+    username =  data['username']
+    password =  data['password']
     shelf = get_db()
     if(username not in shelf ):
         return json.dumps({'message': 'error', 'data': 'User not registered.'})
@@ -149,7 +170,11 @@ def businesslogin():
         ret['address'] = acc['address']
         ret['accountBalance'] = balance(acc['address'])
         ret['type'] = "business"
-        return json.dumps({'message': 'success', 'data': ret})
+        response = jsonify({'message': 'success', 'data': ret})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
     else:
-        return json.dumps({'message': 'Not authorized'})
+        response = jsonify({'message': 'Not authorized'})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
 
