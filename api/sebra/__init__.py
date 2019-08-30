@@ -191,6 +191,7 @@ def accountDetails():
         ret['username'] = session['user']
         ret['address'] = shelf[session['user']]['address']
         ret['balance'] = balance(ret['address']) 
+        ret['type'] =  shelf[session['user']]['type']
         response = jsonify({'message': 'Success', 'data': ret})
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
