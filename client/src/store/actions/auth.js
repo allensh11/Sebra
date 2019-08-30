@@ -1,5 +1,5 @@
 import { SET_AUTH } from '../constants';
-//import axios from 'axios';
+import axios from 'axios';
 
 
 const _setAuth = auth => ({
@@ -12,13 +12,25 @@ export const logout = history => {
     return _setAuth({});
 }
 
-export const login = (credentials, history) => (
+export const login = (state, params, history) => (
     dispatch => {
-        const auth = {
-            id: 123,
-            balance: 5
-        }
-        history.push(`/account/${auth.id}`);
-        dispatch(_setAuth(auth));
+        const { username, password, type } = state;
+
+        type === 'customer' 
+        ? ( axios.post('https://vast-plains-55545.herokuapp.com/api/login', { username, password })
+                .then(res => res.data.data)
+                .then(data => {
+                    history.push('/account');
+                    if(params.recipientAddress) dispatch(_setAuth({ ...data, recipientAddress: params.recipientAddress }));
+                    else dispatch(_setAuth(data));
+                })
+        )
+        : ( axios.post('https://vast-plains-55545.herokuapp.com/api/businessLogin', { username, password })
+                .then(res => res.data.data)
+                .then(data => {
+                    history.push('/dashboard');
+                    dispatch(_setAuth(data));
+                })
+        )
     }
 )

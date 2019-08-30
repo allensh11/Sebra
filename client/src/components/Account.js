@@ -145,7 +145,7 @@ const subtotal = calcSubtotal(cart);
 const taxes = calcTaxes(subtotal, shippingCost, taxRate);
 
 
-const Account = ({ customerId, history }) => {
+const Account = ({ history }) => {
 
   const classes = useStyles();
 
@@ -154,10 +154,9 @@ const Account = ({ customerId, history }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log('account submit');
     dispatch(updateOrder(cart, auth, history));
   }
-
+  
   return (
     <Grid container className={classes.root} /* spacing={2} */ >
       <Grid item xs className={classes.leftContainer}>
@@ -167,7 +166,7 @@ const Account = ({ customerId, history }) => {
                 <Typography variant="h5" align="left" className={classes.header2}>Your account.</Typography>
             </div>
             <div className={classes.balanceContainer}>
-              <Typography className={classes.balance} variant="h2">{ '$' + auth.balance }</Typography>
+              <Typography className={classes.balance} variant="h2">{ '$' + auth.accountBalance }</Typography>
             </div>
             <Button onClick={ e => handleSubmit(e) } variant="contained" color="primary" className={classes.button}>
               Pay

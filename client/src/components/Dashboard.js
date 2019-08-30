@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import { useSelector } from 'react-redux';
 import Snippet from './Snippet';
 
 
@@ -42,16 +43,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const auth = {
-    id: 789,
-    balance: 55,
-    name: 'Business name here',
-    isBusiness: true
-}
 
-const Dashboard = ({ businessId, history }) => {
+const Dashboard = ({ history }) => {
 
   const classes = useStyles();
+
+  const auth = useSelector(store => store.auth);
 
   return (
     <Grid container className={classes.root}>
@@ -71,7 +68,7 @@ const Dashboard = ({ businessId, history }) => {
             {/* <Button variant="contained" color="primary" className={classes.button}>
                 Generate JS Snippet
             </Button> */}
-            <Snippet/>
+            <Snippet auth={ auth }/>
         </Paper>
       </Grid>
     </Grid>
