@@ -12,23 +12,24 @@ export const logout = history => {
     return _setAuth({});
 }
 
-export const login = (credentials, history) => (
+export const login = (state, history) => (
     dispatch => {
-        /* const auth = {
-            id: 123,
-            balance: 5
-        }
-        history.push(`/account/${auth.id}`);
-        dispatch(_setAuth(auth)); */
-        
-        credentials = { username: 'allen2', recipientAddress: '4f518290107c5420bc80bb314783469e1d863c4dcea576334def709b03a8557b', amount: 1 }
-        console.log(credentials)
-        axios.post('https://vast-plains-55545.herokuapp.com/api/transaction', credentials)
-            .then(res => res.data)
-            .then(data => {
-                console.log(data)
-                //dispatch(_setAuth(auth));
-            })
-            .catch(err => console.log(err))
+        const { username, password, type } = state;
+
+        type === 'customer' 
+        ? ( axios.post('https://vast-plains-55545.herokuapp.com/api/login', { username, password })
+                .then(res => res.data)
+                .then(data => {
+                    history.push('/account');
+                    dispatch(_setAuth(data.data));
+                })
+        )
+        : ( axios.post('https://vast-plains-55545.herokuapp.com/api/businessLogin', { username, password })
+                .then(res => res.data)
+                .then(data => {
+                    history.push('/dashboard');
+                    dispatch(_setAuth(data.data));
+                })
+        )
     }
 )

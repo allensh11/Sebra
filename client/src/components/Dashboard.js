@@ -49,7 +49,7 @@ const auth = {
     isBusiness: true
 }
 
-const Dashboard = ({ businessId, history }) => {
+const Dashboard = ({ history }) => {
 
   const classes = useStyles();
 

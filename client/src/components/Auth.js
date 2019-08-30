@@ -102,7 +102,6 @@ const Auth = ({ pathname, history }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log('auth submit');
     pathname === '/login' 
       ? dispatch(login(state, history)) 
       : dispatch(createUser(state, history))
