@@ -81,7 +81,7 @@ const types = [
   },
 ];
 
-const Auth = ({ pathname, history }) => {
+const Auth = ({ pathname, params, history }) => {
   const classes = useStyles();
 
   const [state, setState] = React.useState({
@@ -102,9 +102,9 @@ const Auth = ({ pathname, history }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    pathname === '/login' 
-      ? dispatch(login(state, history)) 
-      : dispatch(createUser(state, history))
+    pathname.slice(0, 6) === '/login' 
+      ? dispatch(login(state, params, history)) 
+      : dispatch(createUser(state, params, history))
   }
 
   return (
@@ -113,7 +113,7 @@ const Auth = ({ pathname, history }) => {
         <div className={classes.headerContainer}>
           <Typography variant="h2" align="left" className={classes.header1}>Welcome to Sebra!</Typography>
           <Typography variant="h5" align="left" className={classes.header2}>
-            { pathname === '/login' ? 'Login.' : 'Create your account.' }  
+            { pathname.slice(0, 6) === '/login' ? 'Login.' : 'Create your account.' }  
           </Typography>
         </div>
         <div className={classes.formContainer1}>
@@ -157,13 +157,13 @@ const Auth = ({ pathname, history }) => {
               ))}
             </TextField>
             <Button onClick={ e => handleSubmit(e) } variant="contained" color="primary" className={classes.button}>
-              { pathname === '/login' ? 'Login' : 'Create' }  
+              { pathname.slice(0, 6) === '/login' ? 'Login' : 'Create' }  
             </Button>
           </form>
           { 
-            pathname === '/login' 
+            pathname.slice(0, 6) === '/login' 
             ? <Typography variant="body2" align="left">
-                <Link to='/create-account' className={classes.link}>New to Sebra? Create your account here.</Link>
+                <Link to={`/create-account/${params.recipientAddress}`} className={classes.link}>New to Sebra? Create your account here.</Link>
               </Typography> 
             : null
           }

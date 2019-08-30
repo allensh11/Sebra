@@ -7,25 +7,25 @@ export const _createUser = user => ({
     user
 })
 
-export const createUser = (state, history) => (
+export const createUser = (state, params, history) => (
     dispatch => {
         const { username, password, type } = state;
 
         type === 'customer' 
         ? ( axios.post('https://vast-plains-55545.herokuapp.com/api/register', { username, password })
-                .then(res => res.data)
+                .then(res => res.data.data)
                 .then(data => {
-                    console.log(data, 'customer')
-                    history.push('/login');
-                    dispatch(_createUser(data.data));
+                    if(params.recipientAddress) history.push(`/login/${params.recipientAddress}`);
+                    else history.push('/login');
+                    dispatch(_createUser(data));
                 })
         )
         : ( axios.post('https://vast-plains-55545.herokuapp.com/api/businessRegister', { username, password })
-                .then(res => res.data)
+                .then(res => res.data.data)
                 .then(data => {
-                    console.log(data, 'business')
-                    history.push('/login');
-                    dispatch(_createUser(data.data));
+                    if(params.recipientAddress) history.push(`/login/${params.recipientAddress}`);
+                    else history.push('/login');
+                    dispatch(_createUser(data));
                 })
         )
     }

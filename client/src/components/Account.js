@@ -154,7 +154,6 @@ const Account = ({ history }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log('account submit');
     dispatch(updateOrder(cart, auth, history));
   }
   

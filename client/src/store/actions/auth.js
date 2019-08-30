@@ -12,23 +12,24 @@ export const logout = history => {
     return _setAuth({});
 }
 
-export const login = (state, history) => (
+export const login = (state, params, history) => (
     dispatch => {
         const { username, password, type } = state;
 
         type === 'customer' 
         ? ( axios.post('https://vast-plains-55545.herokuapp.com/api/login', { username, password })
-                .then(res => res.data)
+                .then(res => res.data.data)
                 .then(data => {
                     history.push('/account');
-                    dispatch(_setAuth(data.data));
+                    if(params.recipientAddress) dispatch(_setAuth({ ...data, recipientAddress: params.recipientAddress }));
+                    else dispatch(_setAuth(data));
                 })
         )
         : ( axios.post('https://vast-plains-55545.herokuapp.com/api/businessLogin', { username, password })
-                .then(res => res.data)
+                .then(res => res.data.data)
                 .then(data => {
                     history.push('/dashboard');
-                    dispatch(_setAuth(data.data));
+                    dispatch(_setAuth(data));
                 })
         )
     }
