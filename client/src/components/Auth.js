@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
 import { useDispatch } from 'react-redux';
 import { login } from '../store/actions/auth';
 import { createUser } from '../store/actions/users';
@@ -16,21 +17,21 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: '2.5%'
+    marginTop: '1.5%'
   },
   paperContainer: {
-    padding: theme.spacing(6, 4),
+    padding: theme.spacing(3, 2),
   },
   headerContainer: {
     width: '100%',
     maxWidth: 500,
-    margin: '40px 0px',
+    margin: '20px 0px',
   },
   header1: {
     marginLeft: '8px'
   },
   header2: {
-    margin: '65px 0px 65px 8px',
+    margin: '50px 0px 50px 8px',
     fontWeight: 250
   },
   formContainer1: {
@@ -38,12 +39,18 @@ const useStyles = makeStyles(theme => ({
   },
   formContainer2: {
     display: 'flex',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: '100%'
+  },
+  textFieldType: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: '100%',
+    marginTop: '25px'
   },
   dense: {
     marginTop: 19,
@@ -54,7 +61,7 @@ const useStyles = makeStyles(theme => ({
   button: {
     textAlign: 'right',
     marginTop: '41px',
-    marginLeft: '69%',
+    marginLeft: '76%',
     fontSize: '19px',
     padding: '20px 40px'
   },
@@ -63,13 +70,25 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const types = [
+  {
+    value: 'customer',
+    label: 'Customer',
+  },
+  {
+    value: 'business',
+    label: 'Business',
+  },
+];
+
 const Auth = ({ pathname, history }) => {
   const classes = useStyles();
 
   const [state, setState] = React.useState({
     username: '',
     password: '',
-    error: ''
+    /* error: '' */
+    type: 'customer',
   });
 
   const handleChange = id => e => {
@@ -121,6 +140,23 @@ const Auth = ({ pathname, history }) => {
               onChange={handleChange('password')}
               margin="normal"
             />
+            <TextField
+              id="type"
+              select
+              label=""
+              className={classes.textFieldType}
+              value={state.type}
+              onChange={handleChange('type')}
+              SelectProps={{ MenuProps: { className: classes.menu }}}
+              helperText="Please select"
+              margin="normal"
+            >
+              {types.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
             <Button onClick={ e => handleSubmit(e) } variant="contained" color="primary" className={classes.button}>
               { pathname === '/login' ? 'Login' : 'Create' }  
             </Button>
