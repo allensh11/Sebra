@@ -122,11 +122,11 @@ const Auth = ({ pathname, history }) => {
               margin="normal"
             />
             <Button onClick={ e => handleSubmit(e) } variant="contained" color="primary" className={classes.button}>
-              { pathname === '/login' ? 'Login' : 'Create' }  
+              { pathname === '/businessLogin' ? 'Login' : 'Create' }  
             </Button>
           </form>
           { 
-            pathname === '/login' 
+            pathname === '/businessLogin' 
             ? <Typography variant="body2" align="left">
                 <Link to='/create-account' className={classes.link}>New to Sebra? Create your account here.</Link>
               </Typography> 

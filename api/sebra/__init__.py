@@ -21,9 +21,76 @@ def teardown_db(exception):
     db = getattr(g, '_database', None)
     if db is not None:
         db.close()
+
+
 @app.route('/')
 def index():
     return 'Ok'
+
+
+
+
+#-----------REGISTER BUSINESS-----------
+#req params: 
+#   -username
+#   -password
+@app.route('/api/businessRegister', methods=['POST'])
+def businessregister():
+    shelf = get_db()
+    data = request.get_json()
+    #POST: registering new      
+    if(data['username'] in shelf):
+        response = jsonify({'message': 'error', 'data': 'Business already registered.'})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return json.dumps(response)
+
+    acc = account()
+    acc['password'] = hashlib.md5(data['password'].encode('utf-8')).hexdigest()
+    acc['username'] = data['username']
+    shelf[acc['username']] = acc
+    session['user'] = acc['username']
+    ret = {}
+    ret['username'] = acc['username']
+    ret['address'] = acc['address']
+    ret['accountBalance'] = balance(acc['address'])
+    ret['type'] = "business"
+    response = jsonify({'message': 'success', 'data': ret})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+
+
+#-----------LOG IN Business-----------
+# req params: 
+#   -username
+#   -password
+@app.route('/api/businessLogin', methods=['POST'])
+def businesslogin():
+    data = request.get_json()
+    username =  data['username']
+    password =  data['password']
+    shelf = get_db()
+    if(username not in shelf ):
+        return json.dumps({'message': 'error', 'data': 'User not registered.'})
+    passStored = shelf[username]['password']
+    passProvided = hashlib.md5(password.encode('utf-8')).hexdigest()
+    if(passStored == passProvided and shelf[username]['type'] == 'business'):
+        session['user'] = username
+        acc = account(shelf[username]['mnemonic'])
+        ret = {}
+        ret['username'] = username
+        ret['address'] = acc['address']
+        ret['accountBalance'] = balance(acc['address'])
+        ret['type'] = "business"
+        response = jsonify({'message': 'success', 'data': ret})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+    else:
+        response = jsonify({'message': 'Not authorized'})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+
+
 
 #-----------REGISTER-----------
 #req params: 
@@ -85,7 +152,6 @@ def login():
         return response
 
 
-
 #-----------LOG OUT-----------
 #req params: None
 @app.route('/api/logout', methods=['POST'])
@@ -103,7 +169,7 @@ def transaction():
     data = request.get_json()
     recipientAddress =  data['recipientAddress']
     amount =  data['amount']
-    senderUsername=  data['senderUsername']
+    senderUsername=  data['username']
     shelf = get_db()
 
     if ('user' in session and session['user'] == senderUsername):
@@ -117,63 +183,18 @@ def transaction():
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
 
-
-#-----------REGISTER BUSINESS-----------
-#req params: 
-#   -username
-#   -password
-@app.route('/api/businessregister', methods=['POST'])
-def businessregister():
-    shelf = get_db()
-    data = request.get_json()
-    #POST: registering new      
-    if(data['username'] in shelf):
-        response = jsonify({'message': 'error', 'data': 'Business already registered.'})
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        return json.dumps(response)
-
-    acc = account()
-    acc['password'] = hashlib.md5(data['password'].encode('utf-8')).hexdigest()
-    acc['username'] = data['username']
-    shelf[acc['username']] = acc
-    session['user'] = acc['username']
-    ret = {}
-    ret['username'] = acc['username']
-    ret['address'] = acc['address']
-    ret['accountBalance'] = balance(acc['address'])
-    ret['type'] = "business"
-    response = jsonify({'message': 'success', 'data': ret})
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
-
-
-
-#-----------LOG IN Business-----------
-# req params: 
-#   -username
-#   -password
-@app.route('/api/businesslogin', methods=['POST'])
-def businesslogin():
-    data = request.get_json()
-    username =  data['username']
-    password =  data['password']
-    shelf = get_db()
-    if(username not in shelf ):
-        return json.dumps({'message': 'error', 'data': 'User not registered.'})
-    passStored = shelf[username]['password']
-    passProvided = hashlib.md5(password.encode('utf-8')).hexdigest()
-    if(passStored == passProvided and shelf[username]['type'] == 'business'):
-        session['user'] = username
-        acc = account(shelf[username]['mnemonic'])
+@app.route('/api/accountDetails', methods=['POST'])
+def accountDetails():
+    if ('user' in session):
+        shelf = get_db()
         ret = {}
-        ret['username'] = username
-        ret['address'] = acc['address']
-        ret['accountBalance'] = balance(acc['address'])
-        ret['type'] = "business"
-        response = jsonify({'message': 'success', 'data': ret})
+        ret['username'] = session['user']
+        ret['address'] = shelf[session['user']]['address']
+        ret['balance'] = balance(ret['address']) 
+        response = jsonify({'message': 'Success', 'data': ret})
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
-    else:
+    else :
         response = jsonify({'message': 'Not authorized'})
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
