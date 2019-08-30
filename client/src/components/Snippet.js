@@ -67,7 +67,8 @@ const DialogActions = withStyles(theme => ({
   },
 }))(MuiDialogActions);
 
-const Snippet = () => {
+const Snippet = ({ auth }) => {
+  
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -95,7 +96,7 @@ const Snippet = () => {
           <Divider className={classes.divider} />
           <Typography variant="overline" gutterBottom className={classes.code}>
             { '<button>' } <br/> 
-            &thinsp; { '<a href=https://lebra.heroku.com?id=789>' } <br/>
+            &thinsp; { `<a href=https://vast-plains-55545.herokuapp.com/#/login/${auth.address}>` } <br/>
             &emsp; { 'Sebra'} <br/>
             &thinsp; { '</a>' } <br/>
             { '</button>' }
