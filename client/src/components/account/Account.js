@@ -15,15 +15,29 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     marginTop: '1.5%'
   },
-  paperContainer: { padding: theme.spacing(3, 2) },
+  paperContainer: { 
+    padding: theme.spacing(3, 2),
+    [theme.breakpoints.down('1080')]: {
+      height: '394px',
+      marginTop: '-4px'
+    }  
+  },
   headerContainer: {
     width: '100%',
     maxWidth: 500,
     margin: '40px 0px',
+    [theme.breakpoints.down('1080')]: { margin: '0px' }  
+  },
+  header1: {
+    [theme.breakpoints.down('1080')]: { fontSize: '45px' }  
   },
   header2: {
     margin: '65px 0px',
-    fontWeight: 250
+    fontWeight: 250,
+    [theme.breakpoints.down('1080')]: { 
+      margin: '40px 0px',
+      fontSize: '22px'
+    }
   },
   balanceContainer: {
     width: '50%',
@@ -35,7 +49,11 @@ const useStyles = makeStyles(theme => ({
     fontSize: '75px',
     lineHeight: '225px',
     textAlign: 'center',
-    paddingTop: '7px'
+    paddingTop: '7px',
+    [theme.breakpoints.down('1080')]: { 
+      fontSize: '50px',
+      lineHeight: '125px'
+    }
   },
   emojiContainer: {
     width: '50px',
@@ -47,19 +65,27 @@ const useStyles = makeStyles(theme => ({
     fontSize: '75px',
     lineHeight: '225px',
     textAlign: 'center',
-    paddingTop: '7px'
+    paddingTop: '7px',
+    [theme.breakpoints.down('1080')]: { lineHeight: '170px' }
   },
   button: {
     textAlign: 'right',
     marginTop: '41px',
-    marginLeft: '69%',
+    marginLeft: '67%',
     fontSize: '19px',
-    padding: '20px 40px'
+    padding: '15px 35px',
+    [theme.breakpoints.down('1080')]: { 
+      padding: '10px 20px',
+      fontSize: '17px',
+      marginTop: '-22px',
+      textAlign: 'right',
+      marginLeft: '70%'
+    }
   },
 }));
 
 
-const Account = ({ pathname, history }) => {
+const Account = ({ pathname, params, history }) => {
   const classes = useStyles();
   const auth = useSelector(store => store.auth);
   pathname = pathname.slice(8);
@@ -68,8 +94,8 @@ const Account = ({ pathname, history }) => {
     <div className={classes.mainContainer}>
       <Paper className={classes.paperContainer}>
         <div className={classes.headerContainer}>
-            <Typography variant="h2" align="left">
-              { pathname !== '/completed' ? 'Pay with Lebra.' : 'Paid with Lebra!' }
+            <Typography className={classes.header1} variant="h2" align="left">
+              { pathname !== '/completed' ? 'Pay with Libra.' : 'Paid with Libra!' }
             </Typography>
             <Typography variant="h5" align="left" className={classes.header2}>Your account.</Typography>
         </div>
@@ -78,9 +104,9 @@ const Account = ({ pathname, history }) => {
             ? (
               <Fragment>
                 <div className={classes.balanceContainer}>
-                  <Typography className={classes.balance} variant="h2">{ '$' + auth.accountBalance }</Typography>
+                  <Typography className={classes.balance} variant="h2">{ '≋' + auth.accountBalance }</Typography>
                 </div>
-                <ErrorSnackbar history={ history }/>
+                <ErrorSnackbar history={ history } params={ params }/>
               </Fragment>
             )
             : (
