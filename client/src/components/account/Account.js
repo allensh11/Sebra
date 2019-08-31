@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const Account = ({ pathname, history }) => {
+const Account = ({ pathname, params, history }) => {
   const classes = useStyles();
   const auth = useSelector(store => store.auth);
   pathname = pathname.slice(8);
@@ -80,7 +80,7 @@ const Account = ({ pathname, history }) => {
                 <div className={classes.balanceContainer}>
                   <Typography className={classes.balance} variant="h2">{ '≋' + auth.accountBalance }</Typography>
                 </div>
-                <ErrorSnackbar history={ history }/>
+                <ErrorSnackbar history={ history } params={ params }/>
               </Fragment>
             )
             : (

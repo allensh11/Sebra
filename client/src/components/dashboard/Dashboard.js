@@ -32,6 +32,7 @@ const useStyles = makeStyles(theme => ({
     margin: '65px 0px',
     fontWeight: 250,
   },
+  balanceContainer: { textAlign: 'right' },
   rightContainer: {
     display: 'flex',
     justifyContent: 'space-between',

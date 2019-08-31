@@ -74,7 +74,8 @@ const useStyles2 = makeStyles(theme => ({
   },
 }))
 
-const ErrorSnackbar = ({ history }) => {
+const ErrorSnackbar = ({ history, params }) => {
+  const { recipientAddress, chargeAmount } = params;
   const classes = useStyles2();
   const auth = useSelector(store => store.auth);
   const dispatch = useDispatch();
@@ -94,8 +95,18 @@ const ErrorSnackbar = ({ history }) => {
 
   return (
     <Fragment>
-      <Button variant="contained" color="primary" className={classes.button} onClick={handleClick}>
-        { `Pay  ≋   ${auth.chargeAmount / 100}  Libra` }
+      <Button 
+        variant="contained" 
+        color="primary" 
+        className={classes.button} 
+        onClick={handleClick}
+        disabled={ !recipientAddress || !chargeAmount }
+      >
+        { 
+          recipientAddress && chargeAmount 
+            ? `Pay  ≋   ${chargeAmount / 100}  Libra` 
+            : 'Find Sebra merchant!'
+        }
       </Button>
       <Snackbar
           anchorOrigin={{
