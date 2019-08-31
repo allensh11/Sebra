@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
   margin: { margin: theme.spacing(1) },
   textField: {
     flexBasis: 200,
-    width: '414px'
+    width: '414px',
   },
 }));
 
@@ -67,7 +67,7 @@ const Dashboard = ({ history }) => {
                 <Typography variant="h5" align="left" className={classes.header2}>Your account balance.</Typography>
             </div>
             <div className={classes.balanceContainer}>
-              <Typography className={classes.balance} variant="h2">{ '$' + auth.accountBalance }</Typography>
+              <Typography className={classes.balance} variant="h2">{ '≋' + auth.accountBalance }</Typography>
             </div>
         </Paper>
       </Grid>
@@ -80,7 +80,7 @@ const Dashboard = ({ history }) => {
             placeholder="Enter amount for Snippet"
             value={amount}
             onChange={handleChange()}
-            InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }}
+            InputProps={{ startAdornment: <InputAdornment position="start">≋</InputAdornment> }}
           />
           <Snippet auth={ auth } amount={ amount }/>
         </Paper>

@@ -92,6 +92,7 @@ const types = [
 ];
 
 const Auth = ({ pathname, params, history }) => {
+  const { recipientAddress, chargeAmount } = params;
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -173,11 +174,7 @@ const Auth = ({ pathname, params, history }) => {
               helperText="Please select type (Customer or Business)"
               margin="normal"
             >
-              {types.map(option => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
+            { types.map(option => <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>)}
             </TextField>
           </FormControl>
             <Button 
@@ -193,7 +190,7 @@ const Auth = ({ pathname, params, history }) => {
           { 
             pathname.slice(0, 6) === '/login' 
             ? <Typography variant="body2" align="left">
-                <Link to={`/create-account/${params.recipientAddress}/${params.chargeAmount}`} className={classes.link}>New to Sebra? Create your account here.</Link>
+                <Link to={`/create-account/${recipientAddress}/${chargeAmount}`} className={classes.link}>New to Sebra? Create your account here.</Link>
               </Typography> 
             : null
           }

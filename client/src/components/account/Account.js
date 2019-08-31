@@ -69,7 +69,7 @@ const Account = ({ pathname, history }) => {
       <Paper className={classes.paperContainer}>
         <div className={classes.headerContainer}>
             <Typography variant="h2" align="left">
-              { pathname !== '/completed' ? 'Pay with Lebra.' : 'Paid with Lebra!' }
+              { pathname !== '/completed' ? 'Pay with Libra.' : 'Paid with Libra!' }
             </Typography>
             <Typography variant="h5" align="left" className={classes.header2}>Your account.</Typography>
         </div>
@@ -78,7 +78,7 @@ const Account = ({ pathname, history }) => {
             ? (
               <Fragment>
                 <div className={classes.balanceContainer}>
-                  <Typography className={classes.balance} variant="h2">{ '$' + auth.accountBalance }</Typography>
+                  <Typography className={classes.balance} variant="h2">{ '≋' + auth.accountBalance }</Typography>
                 </div>
                 <ErrorSnackbar history={ history }/>
               </Fragment>

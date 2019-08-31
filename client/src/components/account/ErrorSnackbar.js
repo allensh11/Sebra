@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateOrder } from '../store/actions/orders';
+import { updateOrder } from '../../store/actions/orders';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -65,10 +65,12 @@ MySnackbarContentWrapper.propTypes = {
 const useStyles2 = makeStyles(theme => ({
   button: {
     textAlign: 'right',
+    width: '272px',
+    height: '56px',
     marginTop: '41px',
-    marginLeft: '69%',
+    marginLeft: '26%',
     fontSize: '19px',
-    padding: '20px 40px'
+    padding: '10px 20px'
   },
 }))
 
@@ -93,7 +95,7 @@ const ErrorSnackbar = ({ history }) => {
   return (
     <Fragment>
       <Button variant="contained" color="primary" className={classes.button} onClick={handleClick}>
-          Pay
+        { `Pay  ≋   ${auth.chargeAmount / 100}  Libra` }
       </Button>
       <Snackbar
           anchorOrigin={{
