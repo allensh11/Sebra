@@ -73,11 +73,12 @@ const useStyles = makeStyles(theme => ({
   margin: { margin: theme.spacing(1) },
   textField: {
     /* flexBasis: 200, */
-    width: '367px',
+    width: '400',
+    [theme.breakpoints.down('1080')]: { width: '367px' }  
   },
   error: { 
     margin: '-1px 0px 10px 8px',
-    [theme.breakpoints.down('1080')]: { margin: '-1px 0px 0px 8px',}  
+    [theme.breakpoints.down('1080')]: { margin: '-1px 0px 0px 8px' }  
   }
 }));
 
