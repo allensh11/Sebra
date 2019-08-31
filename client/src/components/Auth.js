@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState/* , useEffect */ } from 'react';
+/* import axios from 'axios'; */
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { login } from '../store/actions/auth';
+import { createUser } from '../store/actions/users';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
-import { useDispatch } from 'react-redux';
-import { login } from '../store/actions/auth';
-import { createUser } from '../store/actions/users';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 
 const useStyles = makeStyles(theme => ({
@@ -20,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: '1.5%'
   },
   paperContainer: {
-    padding: theme.spacing(3, 2),
+    padding: theme.spacing(3, 3),
   },
   headerContainer: {
     width: '100%',
@@ -31,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: '8px'
   },
   header2: {
-    margin: '50px 0px 50px 8px',
+    margin: '50px 0px 50px 13px',
     fontWeight: 250
   },
   formContainer1: {
@@ -39,12 +42,19 @@ const useStyles = makeStyles(theme => ({
   },
   formContainer2: {
     display: 'flex',
-    flexWrap: 'wrap',
+    flexDirection: 'column'
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    width: '93%'
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: '100%'
+  },
+  error: {
+    marginLeft: '8px'
   },
   textFieldType: {
     marginLeft: theme.spacing(1),
@@ -83,30 +93,33 @@ const types = [
 
 const Auth = ({ pathname, params, history }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     username: '',
     password: '',
-    /* error: '' */
     type: 'customer',
+    error: ''
   });
 
-  const handleChange = id => e => {
-    setState({ 
-      ...state, 
-      [id]: e.target.value }
-    )
-  };
-  
-  const dispatch = useDispatch();
+  /* useEffect(() => {
+    axios.post('https://vast-plains-55545.herokuapp.com/api/accountDetails')
+      .then(res => res.data.data)
+      .then(data => console.log(data))
+      .catch(err => console.log(err.message))
+  }) */
+
+  const handleChange = id => e => setState({ ...state, [id]: e.target.value });
 
   const handleSubmit = e => {
     e.preventDefault();
-    pathname.slice(0, 6) === '/login' 
-      ? dispatch(login(state, params, history)) 
-      : dispatch(createUser(state, params, history))
-  }
 
+    return pathname.slice(0, 6) === '/login' 
+      ? dispatch(login(state, params, history))
+          .catch(() => setState({ ...state, error: 'Invalid credentials! Please try again.'}))
+      : dispatch(createUser(state, params, history))
+          .catch(() => setState({ ...state, error: 'Error! Username taken. Please try again.'}))
+  }
   return (
     <div className={classes.mainContainer}>
       <Paper className={classes.paperContainer}>
@@ -118,6 +131,7 @@ const Auth = ({ pathname, params, history }) => {
         </div>
         <div className={classes.formContainer1}>
           <form className={classes.formContainer2} noValidate autoComplete="off">
+          <FormControl className={classes.formControl} error>
             <TextField
               required
               autoFocus
@@ -129,6 +143,13 @@ const Auth = ({ pathname, params, history }) => {
               onChange={handleChange('username')}
               margin="normal"
             />
+            {
+              state.error 
+                ? <FormHelperText className={classes.error}>{state.error}</FormHelperText>  
+                : null
+            }
+          </FormControl>
+          <FormControl className={classes.formControl}>
             <TextField
               required
               fullWidth
@@ -139,6 +160,8 @@ const Auth = ({ pathname, params, history }) => {
               onChange={handleChange('password')}
               margin="normal"
             />
+          </FormControl>
+          <FormControl className={classes.formControl}>
             <TextField
               id="type"
               select
@@ -147,7 +170,7 @@ const Auth = ({ pathname, params, history }) => {
               value={state.type}
               onChange={handleChange('type')}
               SelectProps={{ MenuProps: { className: classes.menu }}}
-              helperText="Please select"
+              helperText="Please select type (Customer or Business)"
               margin="normal"
             >
               {types.map(option => (
@@ -156,14 +179,21 @@ const Auth = ({ pathname, params, history }) => {
                 </MenuItem>
               ))}
             </TextField>
-            <Button onClick={ e => handleSubmit(e) } variant="contained" color="primary" className={classes.button}>
+          </FormControl>
+            <Button 
+              onClick={ e => handleSubmit(e) } 
+              disabled={ !state.username || !state.password }
+              variant="contained" 
+              color="primary" 
+              className={classes.button}
+            >
               { pathname.slice(0, 6) === '/login' ? 'Login' : 'Create' }  
             </Button>
           </form>
           { 
             pathname.slice(0, 6) === '/login' 
             ? <Typography variant="body2" align="left">
-                <Link to={`/create-account/${params.recipientAddress}`} className={classes.link}>New to Sebra? Create your account here.</Link>
+                <Link to={`/create-account/${params.recipientAddress}/${params.chargeAmount}`} className={classes.link}>New to Sebra? Create your account here.</Link>
               </Typography> 
             : null
           }
