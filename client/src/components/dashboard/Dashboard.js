@@ -104,7 +104,9 @@ const Dashboard = ({ history }) => {
                 <Typography variant="h5" align="left" className={classes.header2}>Your account balance.</Typography>
             </div>
             <div className={classes.balanceContainer}>
-              <Typography className={classes.balance} variant="h2">{ '≋' + auth.accountBalance }</Typography>
+              <Typography className={classes.balance} variant="h2">
+                { auth.accountBalance ? '≋' + auth.accountBalance : '≋' }
+              </Typography>
             </div>
         </Paper>
       </Grid>

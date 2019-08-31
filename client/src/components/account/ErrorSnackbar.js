@@ -102,14 +102,17 @@ const ErrorSnackbar = ({ history, params }) => {
     return (
       dispatch(updateOrder(auth, history, params))
         .then(() => setLoading(false))
-        .catch(() => setError('Payment error!'))
+        .catch(() => {
+          setLoading(false);
+          setError('Payment error!');
+        })
     )
   }
   const handleClose = (event, reason) => {
     if(reason === 'clickaway') return;
     setOpen(false);
   }
-  console.log(error)
+  
   return (
     <Fragment>
       { loading ? <Loading/> : null }
@@ -137,8 +140,8 @@ const ErrorSnackbar = ({ history, params }) => {
       >
           <MySnackbarContentWrapper
               onClose={handleClose}
-              variant={/* error ?  */"error"/*  : "success" */}
-              message={/* error ?  */'Payment error!'/*  : "Success payment!" */}
+              variant={error ? "error" : "success"}
+              message={error ? 'Payment error!' : "Success payment!"}
           />
       </Snackbar>
     </Fragment>

@@ -104,7 +104,9 @@ const Account = ({ pathname, params, history }) => {
             ? (
               <Fragment>
                 <div className={classes.balanceContainer}>
-                  <Typography className={classes.balance} variant="h2">{ '≋' + auth.accountBalance }</Typography>
+                  <Typography className={classes.balance} variant="h2">
+                    { auth.accountBalance ? '≋' + auth.accountBalance : '≋' }
+                  </Typography>
                 </div>
                 <ErrorSnackbar history={ history } params={ params }/>
               </Fragment>

@@ -146,14 +146,14 @@ const Auth = ({ pathname, params, history }) => {
       setState({ ...state, loading: true });
       dispatch(login(state, params, history))
         .then(() => setState({ ...state, loading: false }))
-        .catch(() => setState({ ...state, error: 'Invalid credentials! Please try again.'}))
+        .catch(() => setState({ ...state, loading: false, error: 'Invalid credentials! Please try again.'}))
     }
     else {
       setState({ ...state, loading: true });
       dispatch(createUser(state))
         .then(() => dispatch(login(state, params, history)))
         .then(() => setState({ ...state, loading: false }))
-        .catch(() => setState({ ...state, error: 'Error! Username taken. Please try again.'}))
+        .catch(() => setState({ ...state, loading: false, error: 'Error! Username taken. Please try again.'}))
     }
   }
   return (
