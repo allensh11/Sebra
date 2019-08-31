@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateOrder } from '../store/actions/orders';
+import { calcLineItemCost, calcSubtotal, calcTaxes, calcTotal } from '../util';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateOrder } from '../store/actions/orders';
-import { calcLineItemCost, calcSubtotal, calcTaxes, calcTotal } from '../util';
 
 
 const useStyles = makeStyles(theme => ({
@@ -146,9 +146,7 @@ const taxes = calcTaxes(subtotal, shippingCost, taxRate);
 
 
 const Account = ({ history }) => {
-
   const classes = useStyles();
-
   const auth = useSelector(store => store.auth);
   const dispatch = useDispatch();
 

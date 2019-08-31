@@ -1,4 +1,4 @@
-import { SET_AUTH } from '../constants';
+import { SET_AUTH, REMOVE_AUTH } from '../constants';
 import axios from 'axios';
 
 
@@ -6,11 +6,22 @@ const _setAuth = auth => ({
     type: SET_AUTH,
     auth
 })
+const _removeAuth = auth => ({
+    type: REMOVE_AUTH,
+    auth
+})
 
-export const logout = history => {
-    history.push('/login');
-    return _setAuth({});
-}
+export const logout = history => (
+    dispatch => {
+        axios.post('https://vast-plains-55545.herokuapp.com/api/logout')
+            .then(res => res.data.data)
+            .then(data => {
+                console.log(data)
+                history.push('/login');
+                dispatch(_removeAuth({}))
+            })
+    }
+)
 
 export const login = (state, params, history) => (
     dispatch => {
@@ -23,7 +34,7 @@ export const login = (state, params, history) => (
                     history.push('/account');
                     const { recipientAddress } = params;
                     const chargeAmount = Number(params.chargeAmount);
-                    
+
                     if(recipientAddress && chargeAmount) { 
                         dispatch(_setAuth({ ...data, recipientAddress, chargeAmount }));
                     }

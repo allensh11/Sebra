@@ -25,61 +25,50 @@ const styles = theme => ({
 });
 
 const useStyles = makeStyles(theme => ({
-    openButton: {
-        margin: theme.spacing(1),
-        fontSize: '30px',
-        padding: '20px 40px',
-        backgrounColor: '#3f51b5',
-        color: 'white'
-    },
-    divider: {
-        margin: '20px 0px'
-    },
-    code: {
-        color: 'rgba(0, 0, 0, 1)'
-    }
+  openButton: {
+      margin: theme.spacing(1),
+      fontSize: '30px',
+      padding: '20px 40px',
+      backgrounColor: '#3f51b5',
+      color: 'white'
+  },
+  divider: {
+      margin: '20px 0px'
+  },
+  code: {
+      color: 'rgba(0, 0, 0, 1)'
+  }
 }))
 
-const DialogTitle = withStyles(styles)(props => {
-  const { children, classes, onClose } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root}>
-      <Typography variant="h6">{children}</Typography>
-      {onClose ? (
+const DialogTitle = withStyles(styles)(({ children, classes, onClose }) => (
+  <MuiDialogTitle disableTypography className={classes.root}>
+    <Typography variant="h6">{children}</Typography>
+    {
+      onClose ? (
         <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
           <CloseIcon />
         </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
+      ) : null
+    }
+  </MuiDialogTitle>
+));
 
-const DialogContent = withStyles(theme => ({
-  root: {
-    padding: theme.spacing(2),
-  },
+const DialogContent = withStyles(theme => ({ 
+  root: { padding: theme.spacing(2) } 
 }))(MuiDialogContent);
 
-const DialogActions = withStyles(theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(1),
-  },
+const DialogActions = withStyles(theme => ({ 
+  root: { margin: 0, padding: theme.spacing(1) } 
 }))(MuiDialogActions);
 
 const Snippet = ({ auth, amount }) => {
   amount = amount * 100;
+  const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const classes = useStyles();
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
     <div>

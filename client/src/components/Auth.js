@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState/* , useEffect */ } from 'react';
+/* import axios from 'axios'; */
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { login } from '../store/actions/auth';
+import { createUser } from '../store/actions/users';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
-import { useDispatch } from 'react-redux';
-import { login } from '../store/actions/auth';
-import { createUser } from '../store/actions/users';
 
 
 const useStyles = makeStyles(theme => ({
@@ -83,22 +84,23 @@ const types = [
 
 const Auth = ({ pathname, params, history }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     username: '',
     password: '',
-    /* error: '' */
     type: 'customer',
+    /* error: '' */
   });
 
-  const handleChange = id => e => {
-    setState({ 
-      ...state, 
-      [id]: e.target.value }
-    )
-  };
-  
-  const dispatch = useDispatch();
+  /* useEffect(() => {
+    axios.post('https://vast-plains-55545.herokuapp.com/api/accountDetails')
+      .then(res => res.data.data)
+      .then(data => console.log(data))
+      .catch(err => console.log(err.message))
+  }) */
+
+  const handleChange = id => e => setState({ ...state, [id]: e.target.value });
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -156,7 +158,13 @@ const Auth = ({ pathname, params, history }) => {
                 </MenuItem>
               ))}
             </TextField>
-            <Button onClick={ e => handleSubmit(e) } variant="contained" color="primary" className={classes.button}>
+            <Button 
+              onClick={ e => handleSubmit(e) } 
+              disabled={ !state.username || !state.password }
+              variant="contained" 
+              color="primary" 
+              className={classes.button}
+            >
               { pathname.slice(0, 6) === '/login' ? 'Login' : 'Create' }  
             </Button>
           </form>

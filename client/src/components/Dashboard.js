@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import Snippet from './Snippet';
+import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import clsx from 'clsx';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { useSelector } from 'react-redux';
-import Snippet from './Snippet';
 
 
 const useStyles = makeStyles(theme => ({
@@ -55,21 +55,12 @@ const useStyles = makeStyles(theme => ({
 
 
 const Dashboard = ({ history }) => {
-
   const classes = useStyles();
-
-  const [state, setState] = React.useState({
-    amount: ''
-  });
-
-  const handleChange = id => e => {
-    setState({ 
-      ...state, 
-      [id]: e.target.value 
-    });
-  };
-
   const auth = useSelector(store => store.auth);
+
+  const [state, setState] = useState({ amount: '' });
+
+  const handleChange = id => e => setState({ ...state, [id]: e.target.value });
 
   return (
     <Grid container className={classes.root}>

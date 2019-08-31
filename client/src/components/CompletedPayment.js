@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CompletedPayment = ({ customerId, history }) => {
+const CompletedPayment = ({ history }) => {
     const classes = useStyles();
     return (
         <div className={classes.mainContainer}>
@@ -58,7 +58,7 @@ const CompletedPayment = ({ customerId, history }) => {
                 <div className={classes.emojiContainer}>
                     <span className={classes.emoji} role="img" aria-label="party-popper">🎉</span>
                 </div>
-                <Button onClick={ () => history.push('/account/123')} variant="contained" color="primary" className={classes.button}>Done</Button>
+                <Button onClick={ () => history.push('/account')} variant="contained" color="primary" className={classes.button}>Done</Button>
             </Paper>
         </div>
     )
