@@ -71,7 +71,11 @@ const useStyles = makeStyles(theme => ({
     width: '100%'
   },
   error: {
-    marginLeft: '8px'
+    marginLeft: '8px',
+    [theme.breakpoints.down('1080')]: { 
+      marginBottom: '-15px',
+      marginTop: '0px'
+    }
   },
   textFieldType: {
     marginLeft: theme.spacing(1),
@@ -100,6 +104,7 @@ const useStyles = makeStyles(theme => ({
   },
   link: {
     textDecoration: 'none',
+    marginLeft: '19px',
     [theme.breakpoints.down('1080')]: {
       marginTop: '20px',
       marginLeft: '16px',

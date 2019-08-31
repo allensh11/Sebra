@@ -31,7 +31,13 @@ const useStyles = makeStyles(theme => ({
       padding: '20px 40px',
       backgrounColor: '#3f51b5',
       color: 'white',
-      marginTop: '50px'
+      marginTop: '50px',
+      [theme.breakpoints.down('1080')]: {
+        marginTop: '30px',
+        marginLeft: '8px',
+        fontSize: '23px',
+        padding: '10px 54px',
+      }
   },
   divider: { margin: '20px 0px' },
   code: { color: 'rgba(0, 0, 0, 1)' }

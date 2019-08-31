@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   },
   title: { 
     flexGrow: 1,
-    fontSize: '10px',
+    fontSize: '27px',
     [theme.breakpoints.down('1080')]: {
       marginTop: '8px',
       fontSize: '18px'
