@@ -22,9 +22,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: '1%',
     width: '50%',
   },
-  paperLeftContainer: {
-    padding: theme.spacing(3, 3),
-  },
+  paperLeftContainer: { padding: theme.spacing(3, 3) },
   headerContainer: {
     width: '100%',
     /* maxWidth: 500, */
@@ -44,9 +42,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3, 3),
     backgroundColor: 'rgba(250,250,250)',
   },
-  margin: {
-    margin: theme.spacing(1),
-  },
+  margin: { margin: theme.spacing(1) },
   textField: {
     flexBasis: 200,
     width: '414px'
@@ -58,9 +54,9 @@ const Dashboard = ({ history }) => {
   const classes = useStyles();
   const auth = useSelector(store => store.auth);
 
-  const [state, setState] = useState({ amount: '' });
+  const [amount, setAmount] = useState('');
 
-  const handleChange = id => e => setState({ ...state, [id]: e.target.value });
+  const handleChange = () => e => setAmount(e.target.value);
 
   return (
     <Grid container className={classes.root}>
@@ -82,11 +78,11 @@ const Dashboard = ({ history }) => {
             className={clsx(classes.margin, classes.textField)}
             variant="filled"
             placeholder="Enter amount for Snippet"
-            value={state.amount}
-            onChange={handleChange('amount')}
+            value={amount}
+            onChange={handleChange()}
             InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }}
           />
-          <Snippet auth={ auth } amount={ state.amount }/>
+          <Snippet auth={ auth } amount={ amount }/>
         </Paper>
       </Grid>
     </Grid>

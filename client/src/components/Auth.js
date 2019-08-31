@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 
 const useStyles = makeStyles(theme => ({
@@ -21,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: '1.5%'
   },
   paperContainer: {
-    padding: theme.spacing(3, 2),
+    padding: theme.spacing(3, 3),
   },
   headerContainer: {
     width: '100%',
@@ -32,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: '8px'
   },
   header2: {
-    margin: '50px 0px 50px 8px',
+    margin: '50px 0px 50px 13px',
     fontWeight: 250
   },
   formContainer1: {
@@ -40,12 +42,19 @@ const useStyles = makeStyles(theme => ({
   },
   formContainer2: {
     display: 'flex',
-    flexWrap: 'wrap',
+    flexDirection: 'column'
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    width: '93%'
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: '100%'
+  },
+  error: {
+    marginLeft: '8px'
   },
   textFieldType: {
     marginLeft: theme.spacing(1),
@@ -90,7 +99,7 @@ const Auth = ({ pathname, params, history }) => {
     username: '',
     password: '',
     type: 'customer',
-    /* error: '' */
+    error: ''
   });
 
   /* useEffect(() => {
@@ -104,11 +113,13 @@ const Auth = ({ pathname, params, history }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    pathname.slice(0, 6) === '/login' 
-      ? dispatch(login(state, params, history)) 
-      : dispatch(createUser(state, params, history))
-  }
 
+    return pathname.slice(0, 6) === '/login' 
+      ? dispatch(login(state, params, history))
+          .catch(() => setState({ ...state, error: 'Invalid credentials! Please try again.'}))
+      : dispatch(createUser(state, params, history))
+          .catch(() => setState({ ...state, error: 'Error! Username taken. Please try again.'}))
+  }
   return (
     <div className={classes.mainContainer}>
       <Paper className={classes.paperContainer}>
@@ -120,6 +131,7 @@ const Auth = ({ pathname, params, history }) => {
         </div>
         <div className={classes.formContainer1}>
           <form className={classes.formContainer2} noValidate autoComplete="off">
+          <FormControl className={classes.formControl} error>
             <TextField
               required
               autoFocus
@@ -131,6 +143,13 @@ const Auth = ({ pathname, params, history }) => {
               onChange={handleChange('username')}
               margin="normal"
             />
+            {
+              state.error 
+                ? <FormHelperText className={classes.error}>{state.error}</FormHelperText>  
+                : null
+            }
+          </FormControl>
+          <FormControl className={classes.formControl}>
             <TextField
               required
               fullWidth
@@ -141,6 +160,8 @@ const Auth = ({ pathname, params, history }) => {
               onChange={handleChange('password')}
               margin="normal"
             />
+          </FormControl>
+          <FormControl className={classes.formControl}>
             <TextField
               id="type"
               select
@@ -149,7 +170,7 @@ const Auth = ({ pathname, params, history }) => {
               value={state.type}
               onChange={handleChange('type')}
               SelectProps={{ MenuProps: { className: classes.menu }}}
-              helperText="Please select"
+              helperText="Please select type (Customer or Business)"
               margin="normal"
             >
               {types.map(option => (
@@ -158,6 +179,7 @@ const Auth = ({ pathname, params, history }) => {
                 </MenuItem>
               ))}
             </TextField>
+          </FormControl>
             <Button 
               onClick={ e => handleSubmit(e) } 
               disabled={ !state.username || !state.password }

@@ -1,9 +1,13 @@
-import { SET_AUTH, REMOVE_AUTH } from '../constants';
+import { SET_CUSTOMER_AUTH, SET_BUSINESS_AUTH, REMOVE_AUTH } from '../constants';
 import axios from 'axios';
 
 
-const _setAuth = auth => ({
-    type: SET_AUTH,
+const _setCustomerAuth = auth => ({
+    type: SET_CUSTOMER_AUTH,
+    auth
+})
+const _setBusinessAuth = auth => ({
+    type: SET_BUSINESS_AUTH,
     auth
 })
 const _removeAuth = auth => ({
@@ -23,30 +27,30 @@ export const logout = history => (
     }
 )
 
-export const login = (state, params, history) => (
-    dispatch => {
-        const { username, password, type } = state;
+export const login = (state, params, history) => {
+    const { username, password, type } = state;
+    const { recipientAddress } = params;
+    const chargeAmount = Number(params.chargeAmount);
 
+    return dispatch => (
         type === 'customer' 
         ? ( axios.post('https://vast-plains-55545.herokuapp.com/api/login', { username, password })
                 .then(res => res.data.data)
                 .then(data => {
                     history.push('/account');
-                    const { recipientAddress } = params;
-                    const chargeAmount = Number(params.chargeAmount);
 
                     if(recipientAddress && chargeAmount) { 
-                        dispatch(_setAuth({ ...data, recipientAddress, chargeAmount }));
+                        dispatch(_setCustomerAuth({ ...data, recipientAddress, chargeAmount }));
                     }
-                    else dispatch(_setAuth(data));
+                    else dispatch(_setCustomerAuth(data));
                 })
         )
         : ( axios.post('https://vast-plains-55545.herokuapp.com/api/businessLogin', { username, password })
                 .then(res => res.data.data)
                 .then(data => {
                     history.push('/dashboard');
-                    dispatch(_setAuth(data));
+                    dispatch(_setBusinessAuth(data));
                 })
         )
-    }
-)
+    )
+}

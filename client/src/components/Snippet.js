@@ -32,12 +32,8 @@ const useStyles = makeStyles(theme => ({
       backgrounColor: '#3f51b5',
       color: 'white'
   },
-  divider: {
-      margin: '20px 0px'
-  },
-  code: {
-      color: 'rgba(0, 0, 0, 1)'
-  }
+  divider: { margin: '20px 0px' },
+  code: { color: 'rgba(0, 0, 0, 1)' }
 }))
 
 const DialogTitle = withStyles(styles)(({ children, classes, onClose }) => (
@@ -84,7 +80,7 @@ const Snippet = ({ auth, amount }) => {
             Include this in your page and create a container that will be used for the paymentRequestButton Element:
           </Typography>
           <Divider className={classes.divider} />
-          <Typography variant="overline" gutterBottom className={classes.code}>
+          <Typography gutterBottom className={classes.code}>
             { '<button>' } <br/> 
             &thinsp; { `<a href=https://vast-plains-55545.herokuapp.com/#/login/${auth.address}/${amount}>` } <br/>
             &emsp; { 'Sebra'} <br/>
