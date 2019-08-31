@@ -24,7 +24,11 @@ const useStyles = makeStyles(theme => ({
     marginTop: '1%',
     width: '50%',
   },
-  paperLeftContainer: { padding: theme.spacing(3, 3) },
+  paperLeftContainer: { 
+    padding: theme.spacing(3, 3),
+    height: '325px',
+    marginTop: '70px' 
+  },
   headerContainer: {
     width: '100%',
     /* maxWidth: 500, */
@@ -44,6 +48,8 @@ const useStyles = makeStyles(theme => ({
   paperRightContainer: {
     padding: theme.spacing(3, 3),
     backgroundColor: 'rgba(250,250,250)',
+    height: '230px',
+    marginTop: '100px'
   },
   margin: { margin: theme.spacing(1) },
   textField: {

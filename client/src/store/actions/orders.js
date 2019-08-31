@@ -23,6 +23,5 @@ export const updateOrder = (auth, history, params) => {
                 history.push(`/account/completed`);
                 dispatch(_updateOrder(data));
             })
-            .catch(err => console.log(err))
     )
 }
