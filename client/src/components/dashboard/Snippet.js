@@ -57,7 +57,7 @@ const DialogActions = withStyles(theme => ({
   root: { margin: 0, padding: theme.spacing(1) } 
 }))(MuiDialogActions);
 
-const Snippet = ({ auth, amount }) => {
+const Snippet = ({ auth, amount, error }) => {
   amount = amount * 100;
   const classes = useStyles();
 
@@ -68,7 +68,13 @@ const Snippet = ({ auth, amount }) => {
 
   return (
     <div>
-      <Button variant="contained" color="primary" onClick={handleClickOpen} className={classes.openButton}>
+      <Button 
+        variant="contained" 
+        color="primary" 
+        onClick={handleClickOpen} 
+        disabled={error !== ''} 
+        className={classes.openButton}
+      >
         Generate JS Snippet
       </Button>
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>

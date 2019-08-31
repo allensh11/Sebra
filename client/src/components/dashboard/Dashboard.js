@@ -8,6 +8,8 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 
 const useStyles = makeStyles(theme => ({
@@ -45,9 +47,10 @@ const useStyles = makeStyles(theme => ({
   },
   margin: { margin: theme.spacing(1) },
   textField: {
-    flexBasis: 200,
+    /* flexBasis: 200, */
     width: '414px',
   },
+  error: { margin: '-1px 0px 10px 8px' }
 }));
 
 
@@ -56,8 +59,12 @@ const Dashboard = ({ history }) => {
   const auth = useSelector(store => store.auth);
 
   const [amount, setAmount] = useState('');
+  const [error, setError] = useState('');
 
-  const handleChange = () => e => setAmount(e.target.value);
+  const handleChange = () => e => {
+    setAmount(e.target.value);
+    isNaN(Number(e.target.value)) ? setError('Not a valid amount.') : setError('');
+  }
 
   return (
     <Grid container className={classes.root}>
@@ -74,16 +81,23 @@ const Dashboard = ({ history }) => {
       </Grid>
       <Grid item xs className={classes.rightContainer}>
         <Paper className={classes.paperRightContainer}>
-          <TextField
-            id="amount"
-            className={clsx(classes.margin, classes.textField)}
-            variant="filled"
-            placeholder="Enter amount for Snippet"
-            value={amount}
-            onChange={handleChange()}
-            InputProps={{ startAdornment: <InputAdornment position="start">≋</InputAdornment> }}
-          />
-          <Snippet auth={ auth } amount={ amount }/>
+          <FormControl className={classes.formControl} error>
+            <TextField
+              id="amount"
+              className={clsx(classes.margin, classes.textField)}
+              variant="filled"
+              placeholder="Enter amount for Snippet"
+              value={amount}
+              onChange={handleChange()}
+              InputProps={{ startAdornment: <InputAdornment position="start">≋</InputAdornment> }}
+            />
+            {
+              error 
+                ? <FormHelperText className={classes.error}>{error}</FormHelperText>  
+                : null
+            }
+            <Snippet auth={ auth } amount={ amount } error={ error }/>
+          </FormControl>
         </Paper>
       </Grid>
     </Grid>

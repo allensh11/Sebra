@@ -27,7 +27,7 @@ export const exchangeTokenForAuth = (params = {}, history) => (
                     if(history) history.push('/dashboard'); 
                 }   
             }) 
-            //.catch(ex => window.localStorage.removeItem('token'))
+            .catch(ex => window.localStorage.removeItem('token'))
     }
 )
 
@@ -54,7 +54,7 @@ export const logout = (history, recipientAddress, chargeAmount) => {
 
 export const login = (state, params, history) => {
     const { username, password } = state;
-    console.log('login')
+    
     return dispatch => (
         axios.post('https://vast-plains-55545.herokuapp.com/api/auth', { username, password })
             .then(res => res.data.data)

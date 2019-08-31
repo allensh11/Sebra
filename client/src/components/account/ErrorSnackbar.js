@@ -86,7 +86,7 @@ const ErrorSnackbar = ({ history, params }) => {
   const handleClick = e => {
     e.preventDefault();
     setOpen(true);
-    return dispatch(updateOrder(auth, history)).catch(() => setError('Payment error!'));
+    return dispatch(updateOrder(auth, history, params)).catch(() => setError('Payment error!'));
   }
   const handleClose = (event, reason) => {
     if(reason === 'clickaway') return;

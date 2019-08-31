@@ -52,9 +52,9 @@ const useStyles = makeStyles(theme => ({
   button: {
     textAlign: 'right',
     marginTop: '41px',
-    marginLeft: '69%',
+    marginLeft: '67%',
     fontSize: '19px',
-    padding: '20px 40px'
+    padding: '15px 35px'
   },
 }));
 

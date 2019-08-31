@@ -1,5 +1,4 @@
-import React, { useState/* , useEffect */ } from 'react';
-/* import axios from 'axios'; */
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../store/actions/auth';
@@ -103,13 +102,6 @@ const Auth = ({ pathname, params, history }) => {
     error: ''
   });
 
-  /* useEffect(() => {
-    axios.post('https://vast-plains-55545.herokuapp.com/api/accountDetails')
-      .then(res => res.data.data)
-      .then(data => console.log(data))
-      .catch(err => console.log(err.message))
-  }) */
-
   const handleChange = id => e => setState({ ...state, [id]: e.target.value });
 
   const handleSubmit = e => {
@@ -119,6 +111,7 @@ const Auth = ({ pathname, params, history }) => {
       ? dispatch(login(state, params, history))
           .catch(() => setState({ ...state, error: 'Invalid credentials! Please try again.'}))
       : dispatch(createUser(state, params, history))
+          .then(() => dispatch(login(state, params, history)))
           .catch(() => setState({ ...state, error: 'Error! Username taken. Please try again.'}))
   }
   return (
