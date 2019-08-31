@@ -21,7 +21,12 @@ export const login = (state, params, history) => (
                 .then(res => res.data.data)
                 .then(data => {
                     history.push('/account');
-                    if(params.recipientAddress) dispatch(_setAuth({ ...data, recipientAddress: params.recipientAddress }));
+                    const { recipientAddress } = params;
+                    const chargeAmount = Number(params.chargeAmount);
+                    
+                    if(recipientAddress && chargeAmount) { 
+                        dispatch(_setAuth({ ...data, recipientAddress, chargeAmount }));
+                    }
                     else dispatch(_setAuth(data));
                 })
         )

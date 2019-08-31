@@ -67,8 +67,9 @@ const DialogActions = withStyles(theme => ({
   },
 }))(MuiDialogActions);
 
-const Snippet = ({ auth }) => {
-  
+const Snippet = ({ auth, amount }) => {
+  amount = amount * 100;
+
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -96,7 +97,7 @@ const Snippet = ({ auth }) => {
           <Divider className={classes.divider} />
           <Typography variant="overline" gutterBottom className={classes.code}>
             { '<button>' } <br/> 
-            &thinsp; { `<a href=https://vast-plains-55545.herokuapp.com/#/login/${auth.address}>` } <br/>
+            &thinsp; { `<a href=https://vast-plains-55545.herokuapp.com/#/login/${auth.address}/${amount}>` } <br/>
             &emsp; { 'Sebra'} <br/>
             &thinsp; { '</a>' } <br/>
             { '</button>' }

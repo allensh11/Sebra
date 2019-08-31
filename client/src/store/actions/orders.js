@@ -10,8 +10,8 @@ export const updateOrder = (cart, auth, history) => (
     dispatch => {   
         const transactionInfo = { 
             username: auth.username, 
-            recipientAddress: '4f518290107c5420bc80bb314783469e1d863c4dcea576334def709b03a8557b', 
-            amount: 1 
+            recipientAddress: /* auth.recipientAddress, */'fb6afdfa245979b6373268489ae0d7011f4e7e5e72428835bd31cd0bd976d007', 
+            amount: auth.chargeAmount 
         }     
         console.log(transactionInfo)
         axios.post('https://vast-plains-55545.herokuapp.com/api/transaction', transactionInfo)

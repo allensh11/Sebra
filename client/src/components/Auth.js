@@ -163,7 +163,7 @@ const Auth = ({ pathname, params, history }) => {
           { 
             pathname.slice(0, 6) === '/login' 
             ? <Typography variant="body2" align="left">
-                <Link to={`/create-account/${params.recipientAddress}`} className={classes.link}>New to Sebra? Create your account here.</Link>
+                <Link to={`/create-account/${params.recipientAddress}/${params.chargeAmount}`} className={classes.link}>New to Sebra? Create your account here.</Link>
               </Typography> 
             : null
           }
