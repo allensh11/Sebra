@@ -1,21 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../store/actions/auth';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../store/actions/auth';
 
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  title: {
-    flexGrow: 1,
-  },
+  root: { flexGrow: 1 },
+  title: { flexGrow: 1 },
   link: {
     color: 'white',
     textDecoration: 'none'
@@ -25,16 +21,13 @@ const useStyles = makeStyles(theme => ({
 const Nav = ({ pathname, history }) => {
   const classes = useStyles();
   const auth = useSelector(store => store.auth);
-
-  if(pathname === '/') {
-    auth.id ? history.push(`/account/${auth.id}`) : history.push('/login'); 
-  }
-
   const dispatch = useDispatch();
+
+  if(pathname === '/') auth.username ? history.push('/account') : history.push('/login'); 
 
   const handleSubmit = e => {
     e.preventDefault();
-    auth.id ? dispatch(logout(history)) : history.push('/login');
+    auth.username ? dispatch(logout(history)) : history.push('/login');
   }
 
   return (

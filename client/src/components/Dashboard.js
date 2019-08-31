@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import Snippet from './Snippet';
+import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { useSelector } from 'react-redux';
-import Snippet from './Snippet';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 
 const useStyles = makeStyles(theme => ({
@@ -19,9 +22,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: '1%',
     width: '50%',
   },
-  paperLeftContainer: {
-    padding: theme.spacing(3, 3),
-  },
+  paperLeftContainer: { padding: theme.spacing(3, 3) },
   headerContainer: {
     width: '100%',
     /* maxWidth: 500, */
@@ -41,14 +42,21 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3, 3),
     backgroundColor: 'rgba(250,250,250)',
   },
+  margin: { margin: theme.spacing(1) },
+  textField: {
+    flexBasis: 200,
+    width: '414px'
+  },
 }));
 
 
 const Dashboard = ({ history }) => {
-
   const classes = useStyles();
-
   const auth = useSelector(store => store.auth);
+
+  const [amount, setAmount] = useState('');
+
+  const handleChange = () => e => setAmount(e.target.value);
 
   return (
     <Grid container className={classes.root}>
@@ -59,16 +67,22 @@ const Dashboard = ({ history }) => {
                 <Typography variant="h5" align="left" className={classes.header2}>Your account balance.</Typography>
             </div>
             <div className={classes.balanceContainer}>
-              <Typography className={classes.balance} variant="h2">{ '$' + auth.balance }</Typography>
+              <Typography className={classes.balance} variant="h2">{ '$' + auth.accountBalance }</Typography>
             </div>
         </Paper>
       </Grid>
       <Grid item xs className={classes.rightContainer}>
         <Paper className={classes.paperRightContainer}>
-            {/* <Button variant="contained" color="primary" className={classes.button}>
-                Generate JS Snippet
-            </Button> */}
-            <Snippet auth={ auth }/>
+          <TextField
+            id="amount"
+            className={clsx(classes.margin, classes.textField)}
+            variant="filled"
+            placeholder="Enter amount for Snippet"
+            value={amount}
+            onChange={handleChange()}
+            InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }}
+          />
+          <Snippet auth={ auth } amount={ amount }/>
         </Paper>
       </Grid>
     </Grid>
