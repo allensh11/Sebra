@@ -94,29 +94,9 @@ const Snippet = ({ auth, amount, error }) => {
           </Typography>
           <Divider className={classes.divider} />
           <Typography gutterBottom className={classes.code}>
-            {'<style>' } <br/>
-            &thinsp; {`.sebra-button { 
-                          background-color: #3f51b5;
-                          color: white;
-                          padding: 16px 32px;
-                          font-size: 16px;
-                          transition-duration: 0.4s;
-                          cursor: pointer;
-                          border-radius: 4px;
-                        }`} <br/>
-            &thinsp; {`.sebra-button:hover {
-                            background-color: #263bb1;
-                            color: black; 
-                        }`} <br/>
-            &thinsp; {`.sebra-link {
-                        text-decoration: none;
-                        color: white;
-                        }`} <br/>
-            {'</style>'} <br/>
+            { '<link rel="stylesheet" href="https://dgo.nz/hau0x/btn.css"></link>' } <br/>
             { '<button class="sebra-button">' } <br/> 
-            &thinsp; { `<a class="sebra-link" rel="noopener noreferrer" href="https://sebra-client.herokuapp.com/#/login/${auth.address}/${amount}">` } <br/>
-            &emsp; { 'Pay with Sebra'} <br/>
-            &thinsp; { '</a>' } <br/>
+            &thinsp; { `<a class="sebra-link" rel="noopener noreferrer" href="https://sebra-client.herokuapp.com/#/login/${auth.address}/${amount}">Pay with Sebra</a>` } <br/>
             { '</button>' }
           </Typography>
         </DialogContent>
