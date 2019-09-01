@@ -72,7 +72,7 @@ def auth():
             return response
     else:   
         data = request.get_json() 
-        username =  data['username']
+        username =  lower(data['username'])
         password =  data['password']
         shelf = get_db()
         if(username not in shelf):
@@ -187,28 +187,6 @@ def login():
     response = jsonify({'message': 'No longer valid method...'})
     return response, 401 
 
-    # data = request.get_json() 
-    # username =  data['username']
-    # password =  data['password']
-    # shelf = get_db()
-    # if(username not in shelf):
-    #     return json.dumps({'message': 'error', 'data': 'User not registered.'}), 401
-    # passStored = shelf[username]['password']
-    # passProvided = hashlib.md5(password.encode('utf-8')).hexdigest()
-    # if(passStored == passProvided and shelf[username]['type'] == 'customer'):
-    #     session['user'] = username
-    #     ret = {}
-    #     acc = account(shelf[username]['mnemonic'])
-    #     ret['username'] = username
-    #     ret['address'] = acc['address']
-    #     ret['accountBalance'] = balance(acc['address'])
-    #     ret['type'] = "customer"
-    #     response = jsonify({'message': 'success', 'data': ret})
-    #     return response
-    # else:
-    #     response = jsonify({'message': 'Not authorized'})
-    #     return response, 401
-
 
 #-----------LOG OUT-----------
 #req params: None
@@ -250,19 +228,3 @@ def transaction():
     else :
         response = jsonify({'message': 'Not authorized', 'session': 'none'})
         return response, 401
-
-# @app.route('/api/accountDetails', methods=['POST'])
-# def accountDetails():
-#     if ('user' in session):
-#         shelf = get_db()
-#         ret = {}
-#         ret['username'] = session['user']
-#         ret['address'] = shelf[session['user']]['address']
-#         ret['balance'] = balance(ret['address']) 
-#         ret['type'] =  shelf[session['user']]['type']
-#         response = jsonify({'message': 'Success', 'data': ret})
-#         return response
-#     else :
-#         response = jsonify({'message': 'Not authorized'})
-#         return response, 401
-
