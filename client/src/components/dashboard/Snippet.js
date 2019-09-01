@@ -96,7 +96,7 @@ const Snippet = ({ auth, amount, error }) => {
           <Typography gutterBottom className={classes.code}>
             { '<link rel="stylesheet" href="https://dgo.nz/hau0x/btn.css"></link>' } <br/>
             { '<button class="sebra-button">' } <br/> 
-            &thinsp; { `<a class="sebra-link" rel="noopener noreferrer" href="https://sebra-client.herokuapp.com/#/login/${auth.address}/${amount}">Pay with Sebra</a>` } <br/>
+            &thinsp; { `<a class="sebra-link" rel="noopener noreferrer" target="_blank" href="https://sebra-client.herokuapp.com/#/login/${auth.address}/${amount}">Pay with Sebra</a>` } <br/>
             { '</button>' }
           </Typography>
         </DialogContent>
