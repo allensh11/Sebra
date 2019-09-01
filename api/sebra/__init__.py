@@ -9,28 +9,32 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 app.config['SECRET_KEY'] = 'zOm!7e0ei71'
 
+#Allow cross-domain communication between client and server.
+#TODO: Deploy both on the same domain - DOCKERFILE updates required.
 CORS(app, supports_credentials=True)
 
 api = Api(app)
 
+#Gets our Shelve DB
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
         db = g._database = shelve.open("sebra.db", writeback=True)
     return db
 
+#Close DB context
 @app.teardown_appcontext
 def teardown_db(exception):
     db = getattr(g, '_database', None)
     if db is not None:
         db.close()
 
-
+#Root - can probably remove.
 @app.route('/')
 def index():
     return 'Ok'
 
-
+#Decode JWT token, check for validity
 def verifyToken(token):
     try:
         data = jwt.decode(token, app.config['SECRET_KEY'])
@@ -38,6 +42,8 @@ def verifyToken(token):
     except:
         return None
 
+#Standard response between authenticating and verifying logged in users
+#via JWT tokens
 def returnSuccessfulLogin(username, mnemonic, userType):
     ret = {}
     acc = account(mnemonic)
@@ -98,12 +104,12 @@ def businessregister():
     shelf = get_db()
     data = request.get_json()
     #POST: registering new      
-    if(data['username'] in shelf):
+    if(data['username'].lower() in shelf):
         response = jsonify({'message': 'error', 'data': 'Business already registered.'})
         return response, 409
     acc = account()
     acc['password'] = hashlib.md5(data['password'].encode('utf-8')).hexdigest()
-    acc['username'] = data['username']
+    acc['username'] = data['username'].lower()
     acc['type'] = "business"
     shelf[acc['username']] = acc
     session['user'] = acc['username']
@@ -124,7 +130,7 @@ def businessregister():
 @app.route('/api/businessLogin', methods=['POST'])
 def businesslogin():
     data = request.get_json()
-    username =  data['username']
+    username =  data['username'].lower()
     password =  data['password']
     shelf = get_db()
     if(username not in shelf ):
@@ -157,12 +163,12 @@ def register():
     shelf = get_db()
     #POST: registering new     
     data = request.get_json() 
-    if(data['username'] in shelf):
+    if(data['username'].lower() in shelf):
         response = jsonify({'message': 'error', 'data': 'User already registered.'})
         return response, 409
     acc = account()
     acc['password'] = hashlib.md5(data['password'].encode('utf-8')).hexdigest()
-    acc['username'] = data['username']
+    acc['username'] = data['username'].lower()
     acc['type'] = "customer"
     acc['sequenceNumber'] = 0
     shelf[acc['username']] = acc
