@@ -9,7 +9,7 @@ const _updateOrder = order => ({
 export const updateOrder = (auth, history, params) => {
     const { username } = auth;
     const { recipientAddress, chargeAmount } = params;
-    const amount = chargeAmount;
+    const amount = chargeAmount / 100;
 
     const token = window.localStorage.getItem('token');
 
