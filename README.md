@@ -7,12 +7,15 @@ Workflow:
 ![Snippet](https://i.imgur.com/09qiZ6s.png)
 
 2) Payer creates a new account or logs in via an existing account.
+
 ![Account](https://i.imgur.com/lkiq7Im.png) 
 
-3)  Payer completes payment
+3)  Payer completes payment.
+
 ![Gateway](https://i.imgur.com/orOD1Wi.png)
 
 4) Done!
+
 ![Gateway](https://i.imgur.com/QButaYh.png) 
 
 
