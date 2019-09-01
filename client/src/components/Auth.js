@@ -191,6 +191,7 @@ const Auth = ({ pathname, params, history }) => {
               required
               fullWidth
               id="password"
+              type="password"
               label="Password"
               className={classes.textField}
               value={state.password}
