@@ -4,3 +4,4 @@ git+git://github.com/jnsead/pylibra.git@master#egg=pylibra
 PyQRCode==1.2.1
 flask-cors==3.0.8
 PyJWT==1.0.1
+pysha3==1.0.2

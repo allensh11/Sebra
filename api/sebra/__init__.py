@@ -16,7 +16,7 @@ api = Api(app)
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
-        db = g._database = shelve.open("sebra.db")
+        db = g._database = shelve.open("sebra.db", writeback=True)
     return db
 
 @app.teardown_appcontext
@@ -53,10 +53,10 @@ def returnSuccessfulLogin(username, mnemonic, userType):
 # req params: 
 #   -username
 #   -password
-@app.route('/api/auth', methods=['POST'])
+@app.route('/api/auth', methods=['POST', 'GET'])
 def auth():
     token = None
-    if('authorization' in request.headers):
+    if(request.method == 'GET' and 'authorization' in request.headers):
         token = request.headers.get('authorization')
         data = verifyToken(token)
         userFromData = None
@@ -164,6 +164,7 @@ def register():
     acc['password'] = hashlib.md5(data['password'].encode('utf-8')).hexdigest()
     acc['username'] = data['username']
     acc['type'] = "customer"
+    acc['sequenceNumber'] = 0
     shelf[acc['username']] = acc
     ret = {}
     ret['username'] = acc['username']
@@ -233,9 +234,16 @@ def transaction():
     userFromData = None
     if(data is not None and 'user' in data and data['user'] == senderUsername):
         senderMnemonic = shelf[senderUsername]['mnemonic']
-        resp = transfer(senderMnemonic, recipientAddress, amount)
+        sequenceNumber = 0
+        if('sequenceNumber' in shelf[senderUsername]):
+            sequenceNumber = shelf[senderUsername]['sequenceNumber']
+        newSequenceNumber = transfer(senderMnemonic, recipientAddress, amount, sequenceNumber)
+        shelf[senderUsername]['sequenceNumber'] = newSequenceNumber
+        shelf.sync()
+        shelf.close()
         ret = {}
         ret['transferAmount'] = amount
+        ret['sequenceNumber'] = newSequenceNumber
         ret['recipientAddress'] = recipientAddress
         response = jsonify({'message': 'Success', 'data': ret})
         return response
