@@ -1,6 +1,7 @@
 import React, { useState, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateOrder } from '../store/actions/orders';
+import { updateOrder } from '../../store/actions/orders';
+import Loading from '../Loading';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -56,44 +57,77 @@ const MySnackbarContentWrapper = ({ className, message, onClose, variant, ...oth
   );
 }
   
+const { string, func, oneOf } = PropTypes;
 MySnackbarContentWrapper.propTypes = {
-  className: PropTypes.string,
-  message: PropTypes.string,
-  onClose: PropTypes.func,
-  variant: PropTypes.oneOf(['error', 'success']).isRequired,
+  className: string,
+  message: string,
+  onClose: func,
+  variant: oneOf(['error', 'success']).isRequired
 };
 const useStyles2 = makeStyles(theme => ({
   button: {
     textAlign: 'right',
+    width: '272px',
+    height: '56px',
     marginTop: '41px',
-    marginLeft: '69%',
+    marginLeft: '26%',
     fontSize: '19px',
-    padding: '20px 40px'
+    padding: '10px 20px',
+    [theme.breakpoints.down('1080')]: { 
+      width: '249px',
+      height: '47px',
+      padding: '5px 10px',
+      fontSize: '17px',
+      marginTop: '-22px',
+      textAlign: 'right',
+      marginLeft: '12%'
+    }
   },
 }))
 
-const ErrorSnackbar = ({ history }) => {
+const ErrorSnackbar = ({ history, params }) => {
+  const { recipientAddress, chargeAmount } = params;
   const classes = useStyles2();
   const auth = useSelector(store => store.auth);
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleClick = e => {
     e.preventDefault();
     setOpen(true);
-    return dispatch(updateOrder(auth, history)).catch(() => setError('Payment error!'));
+    setLoading(true);
+    return (
+      dispatch(updateOrder(auth, history, params))
+        .then(() => setLoading(false))
+        .catch(() => {
+          setLoading(false);
+          setError('Payment error!');
+        })
+    )
   }
   const handleClose = (event, reason) => {
     if(reason === 'clickaway') return;
     setOpen(false);
   }
-
+  
   return (
     <Fragment>
-      <Button variant="contained" color="primary" className={classes.button} onClick={handleClick}>
-          Pay
+      { loading ? <Loading/> : null }
+      <Button 
+        variant="contained" 
+        color="primary" 
+        className={classes.button} 
+        onClick={handleClick}
+        disabled={ !recipientAddress || !chargeAmount }
+      >
+        { 
+          recipientAddress && chargeAmount 
+            ? `Pay  ≋   ${chargeAmount / 100}  Libra` 
+            : 'Find Sebra merchant!'
+        }
       </Button>
       <Snackbar
           anchorOrigin={{
@@ -107,7 +141,7 @@ const ErrorSnackbar = ({ history }) => {
           <MySnackbarContentWrapper
               onClose={handleClose}
               variant={error ? "error" : "success"}
-              message={error ? error : "Success payment!"}
+              message={error ? 'Payment error!' : "Success payment!"}
           />
       </Snackbar>
     </Fragment>

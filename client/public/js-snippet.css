@@ -1,0 +1,17 @@
+.sebra-button { 
+    background-color: #3f51b5; 
+    color: white; 
+    padding: 16px 32px; 
+    font-size: 16px; 
+    transition-duration: 0.4s; 
+    cursor: pointer; 
+    border-radius: 4px; 
+} 
+.sebra-button:hover { 
+    background-color: #263bb1; 
+    color: black; 
+} 
+.sebra-link { 
+    text-decoration: none; 
+    color: white; 
+} 

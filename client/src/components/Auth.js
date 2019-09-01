@@ -1,9 +1,9 @@
-import React, { useState/* , useEffect */ } from 'react';
-/* import axios from 'axios'; */
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../store/actions/auth';
 import { createUser } from '../store/actions/users';
+import Loading from './Loading';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -22,20 +22,36 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     marginTop: '1.5%'
   },
-  paperContainer: {
+  paperContainer: { 
     padding: theme.spacing(3, 3),
+    [theme.breakpoints.down('1080')]: {
+      height: '394px',
+      marginTop: '-4px'
+    } 
   },
   headerContainer: {
     width: '100%',
     maxWidth: 500,
     margin: '20px 0px',
+    [theme.breakpoints.down('1080')]: {
+      margin: '10px 0px',
+    }
   },
   header1: {
-    marginLeft: '8px'
+    marginLeft: '8px',
+    [theme.breakpoints.down('1080')]: {
+      margin: '-13px 0px',
+      fontSize: '45px'
+    }
   },
   header2: {
-    margin: '50px 0px 50px 13px',
-    fontWeight: 250
+    margin: '45px 0px 45px 13px',
+    fontWeight: 250,
+    [theme.breakpoints.down('1080')]: {
+      margin: '40px 0px -13px 13px',
+      fontWeight: '240',
+      fontSize: '25px'
+    }
   },
   formContainer1: {
     backgroundColor: 'white'
@@ -46,7 +62,8 @@ const useStyles = makeStyles(theme => ({
   },
   formControl: {
     margin: theme.spacing(1),
-    width: '93%'
+    width: '93%',
+    [theme.breakpoints.down('1080')]: { margin: '0px 8px' }
   },
   textField: {
     marginLeft: theme.spacing(1),
@@ -54,7 +71,11 @@ const useStyles = makeStyles(theme => ({
     width: '100%'
   },
   error: {
-    marginLeft: '8px'
+    marginLeft: '8px',
+    [theme.breakpoints.down('1080')]: { 
+      marginBottom: '-15px',
+      marginTop: '0px'
+    }
   },
   textFieldType: {
     marginLeft: theme.spacing(1),
@@ -73,10 +94,22 @@ const useStyles = makeStyles(theme => ({
     marginTop: '41px',
     marginLeft: '76%',
     fontSize: '19px',
-    padding: '20px 40px'
+    padding: '20px 40px',
+    [theme.breakpoints.down('1080')]: {
+      marginTop: '20px',
+      marginLeft: '80%',
+      fontSize: '12px',
+      padding: '8px 8px'
+    }
   },
   link: {
-    textDecoration: 'none'
+    textDecoration: 'none',
+    marginLeft: '19px',
+    [theme.breakpoints.down('1080')]: {
+      marginTop: '20px',
+      marginLeft: '16px',
+      fontSize: '12px',
+    }
   }
 }));
 
@@ -92,6 +125,7 @@ const types = [
 ];
 
 const Auth = ({ pathname, params, history }) => {
+  const { recipientAddress, chargeAmount } = params;
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -99,29 +133,32 @@ const Auth = ({ pathname, params, history }) => {
     username: '',
     password: '',
     type: 'customer',
+    loading: false,
     error: ''
   });
-
-  /* useEffect(() => {
-    axios.post('https://vast-plains-55545.herokuapp.com/api/accountDetails')
-      .then(res => res.data.data)
-      .then(data => console.log(data))
-      .catch(err => console.log(err.message))
-  }) */
 
   const handleChange = id => e => setState({ ...state, [id]: e.target.value });
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    return pathname.slice(0, 6) === '/login' 
-      ? dispatch(login(state, params, history))
-          .catch(() => setState({ ...state, error: 'Invalid credentials! Please try again.'}))
-      : dispatch(createUser(state, params, history))
-          .catch(() => setState({ ...state, error: 'Error! Username taken. Please try again.'}))
+    if(pathname.slice(0, 6) === '/login') {
+      setState({ ...state, loading: true });
+      dispatch(login(state, params, history))
+        .then(() => setState({ ...state, loading: false }))
+        .catch(() => setState({ ...state, loading: false, error: 'Invalid credentials! Please try again.'}))
+    }
+    else {
+      setState({ ...state, loading: true });
+      dispatch(createUser(state))
+        .then(() => dispatch(login(state, params, history)))
+        .then(() => setState({ ...state, loading: false }))
+        .catch(() => setState({ ...state, loading: false, error: 'Error! Username taken. Please try again.'}))
+    }
   }
   return (
     <div className={classes.mainContainer}>
+      { state.loading ? <Loading/> : null }
       <Paper className={classes.paperContainer}>
         <div className={classes.headerContainer}>
           <Typography variant="h2" align="left" className={classes.header1}>Welcome to Sebra!</Typography>
@@ -154,6 +191,7 @@ const Auth = ({ pathname, params, history }) => {
               required
               fullWidth
               id="password"
+              type="password"
               label="Password"
               className={classes.textField}
               value={state.password}
@@ -173,11 +211,7 @@ const Auth = ({ pathname, params, history }) => {
               helperText="Please select type (Customer or Business)"
               margin="normal"
             >
-              {types.map(option => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
+            { types.map(option => <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>)}
             </TextField>
           </FormControl>
             <Button 
@@ -193,7 +227,7 @@ const Auth = ({ pathname, params, history }) => {
           { 
             pathname.slice(0, 6) === '/login' 
             ? <Typography variant="body2" align="left">
-                <Link to={`/create-account/${params.recipientAddress}/${params.chargeAmount}`} className={classes.link}>New to Sebra? Create your account here.</Link>
+                <Link to={`/create-account/${recipientAddress}/${chargeAmount}`} className={classes.link}>New to Sebra? Create your account here.</Link>
               </Typography> 
             : null
           }
