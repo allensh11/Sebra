@@ -4,16 +4,16 @@ Sebra is a tool for online vendors to collect payments/donations through Libra. 
 Workflow:
 1) Vendor generates code snippet to add to their site. This generates a *'Pay with Libra'* button.
 
-![Snippet](https://i.imgur.com/qxJ0HjZ.png)
+![Snippet](https://i.imgur.com/09qiZ6s.png)
 
 2) Payer creates a new account or logs in via an existing account.
-![Account](https://i.imgur.com/OK4V6je.png) 
+![Account](https://i.imgur.com/lkiq7Im.png) 
 
 3)  Payer completes payment
-![Gateway](https://i.imgur.com/6gWInv1.png)
+![Gateway](https://i.imgur.com/orOD1Wi.png)
 
 4) Done!
-![Gateway](https://i.imgur.com/2oCeNV3.png) 
+![Gateway](https://i.imgur.com/QButaYh.png) 
 
 
 ## Server Details
