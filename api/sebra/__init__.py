@@ -72,7 +72,7 @@ def auth():
             return response
     else:   
         data = request.get_json() 
-        username =  lower(data['username'])
+        username =  data['username'].lower()
         password =  data['password']
         shelf = get_db()
         if(username not in shelf):
